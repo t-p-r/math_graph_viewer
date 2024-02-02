@@ -13,5 +13,5 @@ This application is geared towards those having the first touches with graphs an
 
 - As a user, I would like to add/remove a vertex in the current graph.
 - As a user, I would like to add/remove an edge connecting two vertices in the current graph.
-- As a user, I would like to view a list of algorithms I can run on the current graph.
+- As a user, I would like to view a list of algorithms I can run on the current graph (and run them).
 - As a user, I would like to view a list of graphs I created earlier (and load them to the current graph).
