@@ -5,7 +5,6 @@ package model;
 public class Edge {
     private Vertex beginVertex;
     private Vertex endVertex;
-    private int label = -1;
     private int length = 0; // will lay dormant for now
 
     // EFFECTS: creates a new edge with a begin point/Vertex and an end point
@@ -14,25 +13,25 @@ public class Edge {
         this.endVertex = endPoint;
     }
 
-    // REQUIRES: label >= 0
-    // EFFECTS: creates a new edge with a begin point/Vertex and an end point, and a
-    // label
-    public Edge(Vertex beginPoint, Vertex endPoint, int label) {
-        this.beginVertex = beginPoint;
-        this.endVertex = endPoint;
-        this.label = label;
-    }
+    // // REQUIRES: label >= 0
+    // // EFFECTS: creates a new edge with a begin point/Vertex and an end point, and a
+    // // label
+    // public Edge(Vertex beginPoint, Vertex endPoint, int label) {
+    //     this.beginVertex = beginPoint;
+    //     this.endVertex = endPoint;
+    //     this.label = label;
+    // }
 
-    // REQUIRES: label >= 0
-    // MODIFIES: this
-    // EFFECTS: sets the label for the edge
-    public void setLabel(int label) {
-        this.label = label;
-    }
+    // // REQUIRES: label >= 0
+    // // MODIFIES: this
+    // // EFFECTS: sets the label for the edge
+    // public void setLabel(int label) {
+    //     this.label = label;
+    // }
 
-    public int getLabel() {
-        return this.label;
-    }
+    // public int getLabel() {
+    //     return this.label;
+    // }
 
     public Vertex getBeginVertex() {
         return this.beginVertex;

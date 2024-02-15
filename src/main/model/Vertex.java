@@ -29,6 +29,13 @@ public class Vertex {
         adjacent.add(new Edge(this, other));
     }
 
+    // // MODIFIES: this
+    // // EFFECTS: adds a directed edge from the current vertex to <other> with a
+    // // specified label
+    // public void addEdge(Vertex other, int label) {
+    //     adjacent.add(new Edge(this, other, label));
+    // }
+
     // MODIFIES: this
     // EFFECTS: Attempts to remove a directed edge from the current vertex to
     // <other>.
