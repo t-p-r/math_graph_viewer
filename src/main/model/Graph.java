@@ -152,7 +152,7 @@ public class Graph {
     }
 
     // MODIFIES: this
-    // EFFECT: attempts to add an edge connecting two label to the graph.
+    // EFFECT: attempts to remove the first edge found connecting two label to the graph.
     // If either labels is negative, throw NegativeLabelException.
     // If the label of the begin vertex hasn't already existed, throw
     // MissingLabelException.

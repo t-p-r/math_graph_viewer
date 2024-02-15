@@ -49,8 +49,8 @@ public class GraphSimulatorTerminal {
         System.out.println(" \"rv LABEL\" to remove a existing vertex from the graph, or");
         System.out.println(" \"ae LABEL1 LABEL2\" to add an edge to the graph, or");
         System.out.println(" \"re LABEL1 LABEL2\" to remove an existing edge from the graph, or");
-        System.out.println(" \"vv\" to see a list of labels of current vertices, or");
-        System.out.println(" \"ve\" to see a list of current edges, or");
+        System.out.println(" \"vv\" to view the list of labels of current vertices, or");
+        System.out.println(" \"ve\" to view the list of current edges, or");
         System.out.println(" \"A\" to run available algorithms on the graph, or");
         System.out.println(" \"R\" to reload the graph, or");
         System.out.println(" \"S\" to save the graph, or");
@@ -109,7 +109,7 @@ public class GraphSimulatorTerminal {
                 break;
 
             default:
-                System.out.println("Action invalid.");
+                System.out.println("Invalid command.");
                 break;
         }
     }
