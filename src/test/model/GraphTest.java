@@ -20,9 +20,8 @@ class GraphTest {
         g = new Graph();
     }
 
-    // REQUIRES: label< 0, label doesn't exist yet
-    // EFFECT: bypasses repetitive try-catch blocks when the tester knows that the
-    // label to add WILL be added
+    // REQUIRES: label < 0, label doesn't exist yet
+    // EFFECT: bypasses repetitive try-catch blocks
     public void safeAddVertex(int label) {
         try {
             g.addVertex(label);
@@ -157,14 +156,15 @@ class GraphTest {
             assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
         }
 
+        safeAddVertex(10);
+
         try {
-            g.addEdge(20, 10);
+            g.addEdge(10, 20);
             fail("should not reach this point");
         } catch (GraphException ge) {
             assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
         }
-
-        safeAddVertex(10);
+        
         safeAddVertex(20);
 
         try {
