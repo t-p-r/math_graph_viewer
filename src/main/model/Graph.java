@@ -30,19 +30,26 @@ public class Graph {
     // <label of first vertex of first edge> <label of second vertex of first edge>
     // ...
     // <label of first vertex of last edge> <label of second vertex of last edge>
-    public Graph(File f) throws GraphException, FileNotFoundException {
+    public Graph(File f) throws GraphFileCorruptedException, FileNotFoundException {
         vertices = new ArrayList<>();
         labelToVertex = new HashMap<>();
         Scanner getInput = new Scanner(f);
-        int n = getInput.nextInt(); // number of vertices
-        int m = getInput.nextInt(); // number of edges
 
-        for (int i = 1; i <= n; i++) {
-            addVertex(getInput.nextInt());
-        }
+        try {
+            int n = getInput.nextInt(); // number of vertices
+            int m = getInput.nextInt(); // number of edges
 
-        for (int i = 1; i <= m; i++) {
-            addEdge(getInput.nextInt(), getInput.nextInt());
+            for (int i = 1; i <= n; i++) {
+                addVertex(getInput.nextInt());
+            }
+
+            for (int i = 1; i <= m; i++) {
+                addEdge(getInput.nextInt(), getInput.nextInt());
+            }
+
+        } catch (GraphException ge) {
+            getInput.close();
+            throw new GraphFileCorruptedException();
         }
 
         getInput.close();
@@ -144,12 +151,12 @@ public class Graph {
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two label to the graph.
     // If either labels is negative, throw NegativeLabelException.
-    // If either labels hasn't already existed, throw MissingLabelException.
+    // If the label of the begin vertex hasn't already existed, throw MissingLabelException.
     public boolean removeEdge(int beginLabel, int endLabel) throws GraphException {
         if (beginLabel < 0 || endLabel < 0) {
             throw new NegativeLabelException();
         }
-        if (!containsLabel(beginLabel) || !containsLabel(endLabel)) {
+        if (!containsLabel(beginLabel)) {
             throw new MissingLabelException();
         }
 

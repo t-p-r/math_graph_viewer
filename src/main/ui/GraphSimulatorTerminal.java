@@ -265,7 +265,7 @@ public class GraphSimulatorTerminal {
                 System.out.println("Invalid index number.");
             }
 
-        } catch (GraphException ge) {
+        } catch (GraphFileCorruptedException ge) {
             System.out.print("An error has occured while loading the graph: ");
             System.out.println(ge.getMessage());
         } catch (IOException ioe) {

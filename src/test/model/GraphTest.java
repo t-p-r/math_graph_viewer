@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import model.Graph;
 import model.exception.GraphException;
+import model.exception.GraphFileCorruptedException;
 
 class GraphTest {
     private Graph g;
@@ -44,13 +45,30 @@ class GraphTest {
             g = new Graph(new File("sample_graph.gssf"));
         } catch (IOException ioe) {
             fail("should not reach this point");
-        } catch (GraphException ge) {
-            fail("should not reach this point");
         }
 
-        assertEquals(g.getVertices().size(),3);
-        assertEquals(g.getEdges().size(),5);
-        assertEquals(g.getSize(),3);
+        assertEquals(g.getVertices().size(), 3);
+        assertEquals(g.getEdges().size(), 5);
+        assertEquals(g.getSize(), 3);
+    }
+
+    // @Test
+    // public void testCreateGraphFromNonexistantFile() {
+    //     try {
+    //         g = new Graph(new File("dumb.gssf"));
+    //     } catch (IOException ioe) {
+
+    //     }
+    //     fail("should not reach this point");
+    // }
+
+    @Test
+    public void testCreateGraphFromCorruptedFile() {
+        try {
+            g = new Graph(new File("corrupted_graph.gssf"));
+        } catch (IOException ioe) {
+            assertEquals(ioe.getMessage(), "corrupted_graph.gssf (The system cannot find the file specified)");
+        }
     }
 
     @Test
@@ -134,6 +152,13 @@ class GraphTest {
             assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
         }
 
+        try {
+            g.addEdge(20, 10);
+            fail("should not reach this point");
+        } catch (GraphException ge) {
+            assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
+        }
+
         safeAddVertex(10);
         safeAddVertex(20);
 
@@ -195,7 +220,13 @@ class GraphTest {
         }
 
         try {
-            g.removeEdge(1, 2);
+            assertFalse(g.removeEdge(1, 5));
+        } catch (GraphException ge) {
+            fail("should not reach this point");
+        }
+
+        try {
+            assertTrue(g.removeEdge(1, 4));
         } catch (GraphException ge) {
             fail("should not reach this point");
         }
