@@ -189,6 +189,8 @@ public class GraphSimulatorTerminal {
         if (getInput.next().equals("YOLO")) {
             reloadGraph();
             System.out.println("Operation succeded.");
+        } else {
+            System.out.println("Operation aborted.");
         }
     }
 
@@ -251,8 +253,8 @@ public class GraphSimulatorTerminal {
                     .collect(Collectors.toList());
             fileList.removeIf(s -> !s.contains("gssf"));
 
-            System.out.println(Integer.toString(fileList.size()) +
-                    " save files found. Type the corresponding index number (1 - " + Integer.toString(fileList.size())
+            System.out.println(Integer.toString(fileList.size())
+                    + " save files found. Type the corresponding index number (1 - " + Integer.toString(fileList.size())
                     + ") to load them; type ANY other number to abort the operation:");
             for (int i = 1; i <= fileList.size(); i++) {
                 System.out.println(Integer.toString(i) + ": " + fileList.get(i - 1));
