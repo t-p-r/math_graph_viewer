@@ -45,29 +45,34 @@ class GraphTest {
             g = new Graph(new File("sample_graph.gssf"));
         } catch (IOException ioe) {
             fail("should not reach this point");
+        } catch (GraphFileCorruptedException gfce) {
+            fail("should not reach this point");
         }
 
-        assertEquals(g.getVertices().size(), 3);
-        assertEquals(g.getEdges().size(), 5);
-        assertEquals(g.getSize(), 3);
+        assertEquals(g.getVertices().size(), 10);
+        assertEquals(g.getEdges().size(), 8);
+        assertEquals(g.getSize(), 10);
     }
 
-    // @Test
-    // public void testCreateGraphFromNonexistantFile() {
-    //     try {
-    //         g = new Graph(new File("dumb.gssf"));
-    //     } catch (IOException ioe) {
-
-    //     }
-    //     fail("should not reach this point");
-    // }
+    @Test
+    public void testCreateGraphFromNonexistantFile() {
+        try {
+            g = new Graph(new File("not_like_i_am_real.gssf"));
+        } catch (IOException ioe) {
+            assertEquals(ioe.getMessage(), "not_like_i_am_real.gssf (The system cannot find the file specified)");
+        } catch (GraphFileCorruptedException gfce) {
+            fail("should not reach this point");
+        }
+    }
 
     @Test
     public void testCreateGraphFromCorruptedFile() {
         try {
-            g = new Graph(new File("corrupted_graph.gssf"));
+            g = new Graph(new File("corrupt_graph.gssf"));
         } catch (IOException ioe) {
-            assertEquals(ioe.getMessage(), "corrupted_graph.gssf (The system cannot find the file specified)");
+            fail("should not reach this point");
+        } catch (GraphFileCorruptedException gfce) {
+            assertEquals(gfce.getMessage(), "This graph file is possibly corrupted.");
         }
     }
 

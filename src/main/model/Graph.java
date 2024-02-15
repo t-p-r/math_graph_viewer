@@ -47,7 +47,7 @@ public class Graph {
                 addEdge(getInput.nextInt(), getInput.nextInt());
             }
 
-        } catch (GraphException ge) {
+        } catch (RuntimeException | GraphException ge) {
             getInput.close();
             throw new GraphFileCorruptedException();
         }
@@ -151,7 +151,8 @@ public class Graph {
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two label to the graph.
     // If either labels is negative, throw NegativeLabelException.
-    // If the label of the begin vertex hasn't already existed, throw MissingLabelException.
+    // If the label of the begin vertex hasn't already existed, throw
+    // MissingLabelException.
     public boolean removeEdge(int beginLabel, int endLabel) throws GraphException {
         if (beginLabel < 0 || endLabel < 0) {
             throw new NegativeLabelException();
