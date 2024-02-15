@@ -5,6 +5,7 @@ package model;
 public class Edge {
     private Vertex beginVertex;
     private Vertex endVertex;
+    // private int label = -1;
     private int length = 0; // will lay dormant for now
 
     // EFFECTS: creates a new edge with a begin point/Vertex and an end point

@@ -200,7 +200,8 @@ public class GraphSimulatorTerminal {
         mainGraph = new Graph();
     }
 
-    // EFFECT: save the current Graph to <yyyyMMdd_HHmmss.gssf>.
+    // EFFECT: save the current Graph to the file "yyyyMMdd_HHmmss.gssf"
+    // (e.g. the file created on 15:45:17, Feb 14th 2024 is "20240214_154517.gssf")
     // Saved files have the form:
     // <number of vertices> <number of edges>
     // <label of first vertex>
@@ -240,37 +241,53 @@ public class GraphSimulatorTerminal {
     // MODIFIES: this
     // EFFECT: present the user with a list of saved graph files that can be chosen
     // to loaded.
+    // Load the one chosen by the user; abort otherwise.
     // If a GraphException occurs, output the message.
     // Any IOException occured is unexpected and shall be outputed along with the
     // trace stack.
-    // Really can't be decomposed further than this.
-    @SuppressWarnings("methodlength")
     public void loadGraph() {
+        List<String> fileList = getSavedGraphFiles();
+        System.out.println(Integer.toString(fileList.size()) + " save files found.");
+
+        if (fileList != null && fileList.size() > 0)
+            try {
+                System.out.println("Type the corresponding index number (1 - " + Integer.toString(fileList.size())
+                        + ") to load them; type ANY other number to abort the operation:");
+                for (int i = 1; i <= fileList.size(); i++) {
+                    System.out.println(Integer.toString(i) + ": " + fileList.get(i - 1));
+                }
+
+                int index = getInput.nextInt();
+                if (1 <= index && index <= fileList.size()) {
+                    mainGraph = new Graph(new File(fileList.get(index - 1)));
+                    System.out.println("Loaded graph saved in file " + fileList.get(index - 1) + ".");
+                } else {
+                    System.out.println("Operation aborted.");
+                }
+
+            } catch (IOException ioe) {
+                System.out.println("Unexpected file error. The file may have been corrupted or deleted.");
+                ioe.printStackTrace();
+            }
+    }
+
+    // EFFECT: get a list of saved graph files (i.e. those ending in ".gssf")
+    // Doesn't check for corruption signs, which is the responsibility of functions
+    // calling this.
+    // Any IOException occured is unexpected and shall be outputed along with the
+    // trace stack, in which case the function returns null.
+    public List<String> getSavedGraphFiles() {
         try {
             List<String> fileList = Files.list(Paths.get("")).filter(file -> !Files.isDirectory(file))
                     .map(Path::getFileName)
                     .map(Path::toString)
                     .collect(Collectors.toList());
             fileList.removeIf(s -> !s.contains("gssf"));
-
-            System.out.println(Integer.toString(fileList.size())
-                    + " save files found. Type the corresponding index number (1 - " + Integer.toString(fileList.size())
-                    + ") to load them; type ANY other number to abort the operation:");
-            for (int i = 1; i <= fileList.size(); i++) {
-                System.out.println(Integer.toString(i) + ": " + fileList.get(i - 1));
-            }
-
-            int index = getInput.nextInt();
-            if (1 <= index && index <= fileList.size()) {
-                mainGraph = new Graph(new File(fileList.get(index - 1)));
-                System.out.println("Loaded graph saved in file " + fileList.get(index - 1));
-            } else {
-                System.out.println("Operation aborted.");
-            }
-
+            return fileList;
         } catch (IOException ioe) {
-            System.out.println("Unexpected file error. The file may have been corrupted or deleted.");
+            System.out.println("Unexpected file error.");
             ioe.printStackTrace();
         }
+        return null;
     }
 }

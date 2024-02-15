@@ -12,7 +12,6 @@ import java.util.Scanner;
 import model.exception.*;
 
 // Directed graph implementation. Assumes that all vertices has distinct labels, and all labels are non-negative.
-
 public class Graph {
     private List<Vertex> vertices;
     private Map<Integer, Vertex> labelToVertex;
@@ -57,7 +56,7 @@ public class Graph {
     }
 
     // // EFFECT: creates a graph with a predefined size. Label vertices according
-    // to
+    // // to
     // // styles defined in the LabelScheme class.
     // public Graph(int size, int labelScheme) {
     // vertices = new ArrayList<Vertex>(size);
@@ -77,10 +76,12 @@ public class Graph {
         return vertices.size();
     }
 
+    // EFFECTS: returns the Vertex having this label number; null otherwise
     public Vertex withLabel(int label) {
         return labelToVertex.get(label);
     }
 
+    // EFFECTS: returns whether the graph has a vertex with this label number
     public boolean containsLabel(int label) {
         return withLabel(label) != null;
     }
@@ -89,6 +90,7 @@ public class Graph {
         return vertices;
     }
 
+    // EFFECTS: returns a list of edges currently in the graph.
     public List<Edge> getEdges() {
         List<Edge> edges = new ArrayList<>();
         for (Vertex v : vertices) {

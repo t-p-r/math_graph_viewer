@@ -49,7 +49,8 @@ class GraphTest {
 
     @Test
     public void compositeTest() {
-        // same as sample_graph.gssf; see if Jacoco is on ketamine
+        // same as sample_graph.gssf; to check if Jacoco is on ketamine
+        // update: Jacoco IS on ketamine
         for (int i = 1; i <= 10; i++) {
             safeAddVertex(i);
         }
