@@ -1,7 +1,7 @@
 package model.exception;
 
-public class GraphException extends Exception{
-    public GraphException(String message){
+public class GraphException extends Exception {
+    public GraphException(String message) {
         super(message);
     }
 }

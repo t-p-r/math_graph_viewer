@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.Scanner;
-import java.util.Set;
 
 import model.*;
 import model.exception.*;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class GraphSimulatorTerminal {
     private static final int ADD_ACTION = 1;
     private static final int REMOVE_ACTION = 2;
-    private Graph g;
+    private Graph mainGraph;
     private Scanner getInput;
     private boolean stillRunning = true;
 
@@ -39,7 +38,7 @@ public class GraphSimulatorTerminal {
     // MODIFIES: this
     // EFFECT: creates a new empty graph and instantiates getInput
     private void init() {
-        g = new Graph();
+        mainGraph = new Graph();
         getInput = new Scanner(System.in);
     }
 
@@ -120,10 +119,10 @@ public class GraphSimulatorTerminal {
     private void tryVertex(int label, int action) {
         try {
             if (action == ADD_ACTION) {
-                g.addVertex(label);
+                mainGraph.addVertex(label);
                 System.out.println("Added a vertex with label " + Integer.toString(label) + ".");
             } else if (action == REMOVE_ACTION) {
-                g.removeVertex(label);
+                mainGraph.removeVertex(label);
                 System.out.println("Removed a vertex with label " + Integer.toString(label) + ".");
             }
         } catch (GraphException ge) {
@@ -137,10 +136,18 @@ public class GraphSimulatorTerminal {
     private void tryEdge(int label1, int label2, int action) {
         try {
             if (action == ADD_ACTION) {
-                g.addEdge(label1, label2);
+                mainGraph.addEdge(label1, label2);
+                System.out.print("Added an edge ");
             } else if (action == REMOVE_ACTION) {
-                g.removeEdge(label1, label2);
+                mainGraph.removeEdge(label1, label2);
+                System.out.print("Removed an edge ");
             }
+
+            System.out.print("from vertex with label ");
+            System.out.print(Integer.toString(label1) + " ");
+            System.out.print("to vertex with label ");
+            System.out.println(Integer.toString(label2) + ".");
+
         } catch (GraphException ge) {
             System.out.println(ge.getMessage());
         }
@@ -149,7 +156,7 @@ public class GraphSimulatorTerminal {
     // EFFECT: list labels of vertices currently in the graph
     private void listVertices() {
         System.out.println("The current graph has vertices with labels:");
-        List<Vertex> vertices = g.getVertices();
+        List<Vertex> vertices = mainGraph.getVertices();
         for (Vertex v : vertices) {
             System.out.print(Integer.toString(v.getLabel()) + " ");
         }
@@ -159,7 +166,7 @@ public class GraphSimulatorTerminal {
     // EFFECT: list labels of edges currently in the graph
     private void listEdges() {
         System.out.println("The current graph has edges:");
-        List<Edge> edges = g.getEdges();
+        List<Edge> edges = mainGraph.getEdges();
         for (Edge e : edges) {
             System.out.print("From vertex with label ");
             System.out.print(Integer.toString(e.getBeginVertex().getLabel()) + " ");
@@ -187,7 +194,7 @@ public class GraphSimulatorTerminal {
     // MODIFIES: this
     // EFFECT: resets the current graph to its beginning state
     private void reloadGraph() {
-        g = new Graph();
+        mainGraph = new Graph();
     }
 
     // EFFECT: save the current Graph to <yyyyMMdd_HHmmss.gssf>.
@@ -205,8 +212,8 @@ public class GraphSimulatorTerminal {
         String currentTimeFormatted = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         try {
             FileWriter saveFile = new FileWriter(currentTimeFormatted + ".gssf");
-            List<Vertex> vertices = g.getVertices();
-            List<Edge> edges = g.getEdges();
+            List<Vertex> vertices = mainGraph.getVertices();
+            List<Edge> edges = mainGraph.getEdges();
 
             saveFile.write(Integer.toString(vertices.size()) + " ");
             saveFile.write(Integer.toString(edges.size()) + "\n");
@@ -252,7 +259,7 @@ public class GraphSimulatorTerminal {
 
             int index = getInput.nextInt();
             if (1 <= index && index <= fileList.size()) {
-                g = new Graph(new File(fileList.get(index - 1)));
+                mainGraph = new Graph(new File(fileList.get(index - 1)));
                 System.out.println("Loaded graph saved in file " + fileList.get(index - 1));
             } else {
                 System.out.println("Invalid index number.");
