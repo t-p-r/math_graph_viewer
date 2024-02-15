@@ -25,13 +25,14 @@ public class GraphSimulatorTerminal {
     // Loosely based on TellerApp
     public GraphSimulatorTerminal() {
         init();
-        System.out.println("\n\nWelcome to Graph Simulator!");
+        System.out.print("\nWelcome to Graph Simulator! ");
 
         while (stillRunning) {
-            System.out.println("\n\n");
             System.out.println("Choose one of the options below:");
             displayOptions();
+            System.out.println("");
             processCommand();
+            System.out.println("");
         }
     }
 
@@ -135,18 +136,18 @@ public class GraphSimulatorTerminal {
     // message, if any.
     private void tryEdge(int label1, int label2, int action) {
         try {
+            String message = "from vertex with label " + Integer.toString(label1) + " " + "to vertex with label "
+                    + Integer.toString(label2) + ".";
             if (action == ADD_ACTION) {
                 mainGraph.addEdge(label1, label2);
-                System.out.print("Added an edge ");
+                System.out.println("Added an edge " + message);
             } else if (action == REMOVE_ACTION) {
-                mainGraph.removeEdge(label1, label2);
-                System.out.print("Removed an edge ");
+                if (mainGraph.removeEdge(label1, label2)) {
+                    System.out.println("Removed an edge " + message);
+                } else {
+                    System.out.println("The specified edge did not exist.");
+                }
             }
-
-            System.out.print("from vertex with label ");
-            System.out.print(Integer.toString(label1) + " ");
-            System.out.print("to vertex with label ");
-            System.out.println(Integer.toString(label2) + ".");
 
         } catch (GraphException ge) {
             System.out.println(ge.getMessage());
@@ -185,9 +186,9 @@ public class GraphSimulatorTerminal {
     // EFFECT: reloadGraph() only if the user types "YOLO".
     private void tryReloadGraph() {
         System.out.println("This action is irreversible. If you really intends to do this, type \"YOLO\" below:");
-        if (getInput.next() == "YOLO") {
+        if (getInput.next().equals("YOLO")) {
             reloadGraph();
-            System.out.println("Graph reloaded.");
+            System.out.println("Operation succeded.");
         }
     }
 
@@ -250,9 +251,9 @@ public class GraphSimulatorTerminal {
                     .collect(Collectors.toList());
             fileList.removeIf(s -> !s.contains("gssf"));
 
-            System.out.println(
-                    "Type the corresponding index number (1 - " + Integer.toString(fileList.size())
-                            + ") to load them.");
+            System.out.println(Integer.toString(fileList.size()) +
+                    " save files found. Type the corresponding index number (1 - " + Integer.toString(fileList.size())
+                    + ") to load them; type ANY other number to abort the operation:");
             for (int i = 1; i <= fileList.size(); i++) {
                 System.out.println(Integer.toString(i) + ": " + fileList.get(i - 1));
             }
@@ -262,7 +263,7 @@ public class GraphSimulatorTerminal {
                 mainGraph = new Graph(new File(fileList.get(index - 1)));
                 System.out.println("Loaded graph saved in file " + fileList.get(index - 1));
             } else {
-                System.out.println("Invalid index number.");
+                System.out.println("Operation aborted.");
             }
 
         } catch (IOException ioe) {
