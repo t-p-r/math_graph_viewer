@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import model.Graph;
 import model.exception.GraphException;
-import model.exception.GraphFileCorruptedException;
 
 class GraphTest {
     private Graph g;
@@ -20,7 +19,7 @@ class GraphTest {
         g = new Graph();
     }
 
-    // REQUIRES: label < 0, label doesn't exist yet
+    // REQUIRES: label >= 0, label must exist
     // EFFECT: bypasses repetitive try-catch blocks
     public void safeAddVertex(int label) {
         try {
@@ -31,6 +30,16 @@ class GraphTest {
         assertEquals(g.withLabel(label).getLabel(), label);
     }
 
+    // REQUIRES: beginLabel >= 0, endLabel >=0, either labels must exist
+    // EFFECT: bypasses repetitive try-catch blocks
+    public void safeAddEdge(int beginLabel, int endLabel) {
+        try {
+            g.addEdge(beginLabel, endLabel);
+        } catch (GraphException ge) {
+            fail("should not reach this point");
+        }
+    }
+
     @Test
     public void testCreateGraph() {
         assertTrue(g.getVertices().isEmpty());
@@ -39,12 +48,31 @@ class GraphTest {
     }
 
     @Test
+    public void compositeTest() {
+        // same as sample_graph.gssf; see if Jacoco is on ketamine
+        for (int i = 1; i <= 10; i++) {
+            safeAddVertex(i);
+        }
+
+        safeAddEdge(1, 5);
+        safeAddEdge(2, 7);
+        safeAddEdge(6, 4);
+        safeAddEdge(3, 3);
+        safeAddEdge(4, 5);
+        safeAddEdge(9, 1);
+        safeAddEdge(10, 3);
+        safeAddEdge(7, 5);
+
+        assertEquals(g.getVertices().size(), 10);
+        assertEquals(g.getEdges().size(), 8);
+        assertEquals(g.getSize(), 10);
+    }
+
+    @Test
     public void testCreateGraphFromFile() {
         try {
             g = new Graph(new File("sample_graph.gssf"));
         } catch (IOException ioe) {
-            fail("should not reach this point");
-        } catch (GraphFileCorruptedException gfce) {
             fail("should not reach this point");
         }
 
@@ -59,8 +87,6 @@ class GraphTest {
             g = new Graph(new File("not_like_i_am_real.gssf"));
         } catch (IOException ioe) {
             assertEquals(ioe.getMessage(), "not_like_i_am_real.gssf (The system cannot find the file specified)");
-        } catch (GraphFileCorruptedException gfce) {
-            fail("should not reach this point");
         }
     }
 
@@ -69,9 +95,7 @@ class GraphTest {
         try {
             g = new Graph(new File("corrupt_graph.gssf"));
         } catch (IOException ioe) {
-            fail("should not reach this point");
-        } catch (GraphFileCorruptedException gfce) {
-            assertEquals(gfce.getMessage(), "This graph file is possibly corrupted.");
+            assertEquals(ioe.getMessage(), "Graph file is corrupted or probably deleted.");
         }
     }
 
@@ -164,14 +188,8 @@ class GraphTest {
         } catch (GraphException ge) {
             assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
         }
-        
-        safeAddVertex(20);
 
-        try {
-            g.addEdge(10, 20);
-        } catch (GraphException ge) {
-            fail("should not reach this point");
-        }
+        safeAddVertex(20);
 
         assertEquals(g.withLabel(10).getAdjacent().get(0).getBeginVertex().getLabel(), 10);
         assertEquals(g.withLabel(10).getAdjacent().get(0).getEndVertex().getLabel(), 20);

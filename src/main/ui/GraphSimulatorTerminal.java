@@ -265,11 +265,8 @@ public class GraphSimulatorTerminal {
                 System.out.println("Invalid index number.");
             }
 
-        } catch (GraphFileCorruptedException ge) {
-            System.out.print("An error has occured while loading the graph: ");
-            System.out.println(ge.getMessage());
         } catch (IOException ioe) {
-            System.out.println("Unexpected file error.");
+            System.out.println("Unexpected file error. The file may have been corrupted or deleted.");
             ioe.printStackTrace();
         }
     }

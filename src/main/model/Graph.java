@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 import model.exception.*;
@@ -30,7 +31,7 @@ public class Graph {
     // <label of first vertex of first edge> <label of second vertex of first edge>
     // ...
     // <label of first vertex of last edge> <label of second vertex of last edge>
-    public Graph(File f) throws GraphFileCorruptedException, FileNotFoundException {
+    public Graph(File f) throws IOException, FileNotFoundException {
         vertices = new ArrayList<>();
         labelToVertex = new HashMap<>();
         Scanner getInput = new Scanner(f);
@@ -49,7 +50,7 @@ public class Graph {
 
         } catch (RuntimeException | GraphException ge) {
             getInput.close();
-            throw new GraphFileCorruptedException();
+            throw new IOException("Graph file is corrupted or probably deleted.");
         }
 
         getInput.close();
