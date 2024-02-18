@@ -59,9 +59,6 @@ public class GraphSimulatorTerminal {
     }
 
     // EFFECT: process user input.
-    // Due to the sheer number of commands available, the 25-line limit is easily
-    // breached.
-    @SuppressWarnings("methodlength")
     private void processCommand() {
         switch (getInput.next()) {
             case "av":
