@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class GraphSimulatorTerminal {
     private static final int ADD_ACTION = 1;
     private static final int REMOVE_ACTION = 2;
+    private static final int LIGHT_COMMAND_LENGTH = 2;
+    private static final int HEAVY_COMMAND_LENGTH = 1;
     private Graph mainGraph;
     private Scanner getInput;
     private boolean stillRunning = true;
@@ -60,53 +62,58 @@ public class GraphSimulatorTerminal {
 
     // EFFECT: process user input.
     private void processCommand() {
-        switch (getInput.next()) {
+        String command = getInput.next();
+        if (command.length() == LIGHT_COMMAND_LENGTH) {
+            processLightCommand(command);
+        } else if (command.length() == HEAVY_COMMAND_LENGTH) {
+            processHeavyCommand(command);
+        } else {
+            System.out.println("Invalid command.");
+        }
+    }
+
+    private void processLightCommand(String command) {
+        switch (command) {
             case "av":
                 tryVertex(getInput.nextInt(), ADD_ACTION);
                 break;
-
             case "rv":
                 tryVertex(getInput.nextInt(), REMOVE_ACTION);
                 break;
-
             case "ae":
                 tryEdge(getInput.nextInt(), getInput.nextInt(), ADD_ACTION);
                 break;
-
             case "re":
                 tryEdge(getInput.nextInt(), getInput.nextInt(), REMOVE_ACTION);
                 break;
-
             case "vv":
                 listVertices();
                 break;
-
             case "ve":
                 listEdges();
                 break;
+            default:
+                System.out.println("Invalid command.");
+                break;
+        }
+    }
 
+    private void processHeavyCommand(String command) {
+        switch (command) {
             case "A":
                 runAlgorithms();
                 break;
-
             case "R":
                 tryReloadGraph();
                 break;
-
             case "S":
                 saveGraph();
                 break;
-
             case "L":
                 loadGraph();
                 break;
-
             case "Q":
                 stillRunning = false;
-                break;
-
-            default:
-                System.out.println("Invalid command.");
                 break;
         }
     }
@@ -246,7 +253,7 @@ public class GraphSimulatorTerminal {
         List<String> fileList = getSavedGraphFiles();
         System.out.println(Integer.toString(fileList.size()) + " save files found.");
 
-        if (fileList != null && fileList.size() > 0)
+        if (fileList != null && fileList.size() > 0) {
             try {
                 System.out.println("Type the corresponding index number (1 - " + Integer.toString(fileList.size())
                         + ") to load them; type ANY other number to abort the operation:");
@@ -266,6 +273,7 @@ public class GraphSimulatorTerminal {
                 System.out.println("Unexpected file error. The file may have been corrupted or deleted.");
                 ioe.printStackTrace();
             }
+        }
     }
 
     // EFFECT: get a list of saved graph files (i.e. those ending in ".gssf")
