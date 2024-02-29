@@ -127,11 +127,18 @@ public class Graph {
             throw new NegativeLabelException();
         }
         Vertex toBeRemoved = withLabel(label);
+
         if (toBeRemoved == null) {
             throw new MissingLabelException();
         }
+
+        for (Vertex other : vertices) {
+            other.removeEdge(toBeRemoved);
+        }
+
         vertices.remove(toBeRemoved);
         labelToVertex.remove(label);
+
     }
 
     // MODIFIES: this
@@ -168,6 +175,5 @@ public class Graph {
         Vertex begin = withLabel(beginLabel);
         Vertex end = withLabel(endLabel);
         return begin.removeEdge(end);
-        // TODO: remove edges pointing to beginLabel too
     }
 }
