@@ -55,7 +55,7 @@ public class Vertex {
     }
 
     // EFFECTS: return a JSON object in the form {"label", this.label}
-    public JSONObject toJSON() {
+    public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("label", this.label);
         return json;

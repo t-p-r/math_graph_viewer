@@ -180,20 +180,20 @@ public class Graph {
 
     // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
     // getVertices()
-    public JSONArray verticesToJSON() {
+    public JSONArray verticestoJson() {
         JSONArray jsonArray = new JSONArray();
         for (Vertex v : vertices) {
-            jsonArray.put(v.toJSON());
+            jsonArray.put(v.toJson());
         }
         return jsonArray;
     }
 
     // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
     // getEdges()
-    public JSONArray edgesToJSON() {
+    public JSONArray edgestoJson() {
         JSONArray jsonArray = new JSONArray();
         for (Edge e : getEdges()) {
-            jsonArray.put(e.toJSON());
+            jsonArray.put(e.toJson());
         }
         return jsonArray;
     }
@@ -223,12 +223,12 @@ public class Graph {
     // }
     // ]
     // }```
-    public JSONObject toJSON() {
+    public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("numOfVertices", getVertices().size());
         json.put("numOfEdges", getEdges().size());
-        json.put("vertices", verticesToJSON());
-        json.put("edges", edgesToJSON());
+        json.put("vertices", verticestoJson());
+        json.put("edges", edgestoJson());
         return json;
     }
 }

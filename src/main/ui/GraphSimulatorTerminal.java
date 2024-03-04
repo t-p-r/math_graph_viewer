@@ -210,7 +210,7 @@ public class GraphSimulatorTerminal {
     // EFFECT: save the current Graph to the file "graph_yyyyMMdd_HHmmss.json"
     // (e.g. the file created on 15:45:17, Feb 14th 2024 is
     // "graph_20240214_154517.json")
-    // Saved files have the form described in Graph::toJSON().
+    // Saved files have the form described in Graph::toJson().
     // Any IOException occured is unexpected and shall be outputed along with the
     // trace stack.
     private void saveGraph() {
@@ -218,7 +218,7 @@ public class GraphSimulatorTerminal {
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         try {
             PrintWriter saveFile = new PrintWriter(currentTimeFormatted + ".json");
-            JSONObject json = mainGraph.toJSON();
+            JSONObject json = mainGraph.toJson();
             saveFile.print(json);
             saveFile.close();
             System.out.println("Saved current graph to file " + currentTimeFormatted + ".json.");

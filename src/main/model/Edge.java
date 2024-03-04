@@ -50,7 +50,7 @@ public class Edge {
     //      "beginLabel": beginVertex.label,
     //      "endLabel" : endVertex.label
     // },
-    public JSONObject toJSON() {
+    public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("beginLabel", getBeginVertex().getLabel());
         json.put("endLabel", getEndVertex().getLabel());
