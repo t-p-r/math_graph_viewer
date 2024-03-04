@@ -1,0 +1,30 @@
+{
+    "numOfVertices": 3,
+    "numofEdges": 3,
+    "vertices": [
+        {
+            "label": 1
+        },
+        {
+            "label": 2
+        },
+        {
+            "label": 3
+        }
+    ],
+
+    "edges": [
+        {
+            "beginLabel": 1,
+            "endLabel" : 2
+        },
+        {
+            "beginLabel": 2,
+            "endLabel" : 3
+        },
+        {
+            "beginLabel": 3,
+            "endLabel" : 1
+        }
+    ]
+}
