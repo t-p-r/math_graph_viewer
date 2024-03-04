@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import model.exception.*;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 // Directed graph implementation. Assumes that all vertices has distinct labels, and all labels are non-negative.
 public class Graph {
@@ -30,29 +33,26 @@ public class Graph {
     // <label of first vertex of first edge> <label of second vertex of first edge>
     // ...
     // <label of first vertex of last edge> <label of second vertex of last edge>
-    public Graph(File f) throws IOException, FileNotFoundException {
+    public Graph(Path path) throws IOException, FileNotFoundException {
         vertices = new ArrayList<>();
         labelToVertex = new HashMap<>();
-        Scanner getInput = new Scanner(f);
-
         try {
-            int n = getInput.nextInt(); // number of vertices
-            int m = getInput.nextInt(); // number of edges
-
-            for (int i = 1; i <= n; i++) {
-                addVertex(getInput.nextInt());
+            JSONObject json = new JSONObject(Files.readString(path));
+            JSONArray jsonArray = json.getJSONArray("vertices");
+            for (Object obj : jsonArray) {
+                addVertex(((JSONObject) obj).getInt("label"));
             }
 
-            for (int i = 1; i <= m; i++) {
-                addEdge(getInput.nextInt(), getInput.nextInt());
+            jsonArray = json.getJSONArray("edges");
+            for (Object obj : jsonArray) {
+                int beginVertex = ((JSONObject) obj).getInt("beginLabel");
+                int endVertex = ((JSONObject) obj).getInt("endLabel");
+                addEdge(beginVertex, endVertex);
             }
 
         } catch (RuntimeException | GraphException ge) {
-            getInput.close();
             throw new IOException("Graph file is corrupted or probably deleted.");
         }
-
-        getInput.close();
     }
 
     // // EFFECT: creates a graph with a predefined size. Label vertices according
@@ -72,9 +72,10 @@ public class Graph {
     // }
     // }
 
-    public int getSize() {
-        return vertices.size();
-    }
+    // deprecated; use getVertices().size() directly instead.
+    // public int getSize() {
+    // return vertices.size();
+    // }
 
     // EFFECTS: returns the Vertex having this label number; null otherwise
     public Vertex withLabel(int label) {
@@ -169,5 +170,59 @@ public class Graph {
         Vertex end = withLabel(endLabel);
         return begin.removeEdge(end);
         // TODO: remove edges pointing to beginLabel too
+    }
+
+    // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
+    // getVertices()
+    public JSONArray verticesToJSON() {
+        JSONArray jsonArray = new JSONArray();
+        for (Vertex v : vertices) {
+            jsonArray.put(v.toJSON());
+        }
+        return jsonArray;
+    }
+
+    // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
+    // getEdges()
+    public JSONArray edgesToJSON() {
+        JSONArray jsonArray = new JSONArray();
+        for (Edge e : getEdges()) {
+            jsonArray.put(e.toJSON());
+        }
+        return jsonArray;
+    }
+    // EFFECT: Convert the current graph into a JSONObject with the form:
+    // ```{
+    // "numOfVertices": <n>,
+    // "numofEdges": <m>,
+    // "vertices": [
+    // {
+    // "label": <v_1>
+    // },
+    // ...,
+    // {
+    // "label": <v_n>
+    // }
+    // ],
+
+    // "edges": [
+    // {
+    // "beginLabel": <u_1>,
+    // "endLabel" : <v_1>
+    // },
+    // ...,
+    // {
+    // "beginLabel": <u_m>,
+    // "endLabel" : <v_m>
+    // }
+    // ]
+    // }```
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("numOfVertices", getVertices().size());
+        json.put("numOfEdges", getEdges().size());
+        json.put("vertices", verticesToJSON());
+        json.put("edges", edgesToJSON());
+        return json;
     }
 }

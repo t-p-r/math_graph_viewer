@@ -1,6 +1,9 @@
 package model;
 
 import java.util.List;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 // Vertices in graph implementation. Uses an adjacent list which connects to edges and not other vertices directly.
@@ -33,7 +36,7 @@ public class Vertex {
     // // EFFECTS: adds a directed edge from the current vertex to <other> with a
     // // specified label
     // public void addEdge(Vertex other, int label) {
-    //     adjacent.add(new Edge(this, other, label));
+    // adjacent.add(new Edge(this, other, label));
     // }
 
     // MODIFIES: this
@@ -49,6 +52,13 @@ public class Vertex {
             }
         }
         return false;
+    }
+
+    // EFFECTS: return a JSON object in the form {"label", this.label}
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("label", this.label);
+        return json;
     }
 
     public int getLabel() {

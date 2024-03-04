@@ -3,7 +3,7 @@ package test.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.io.File;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,6 @@ class GraphTest {
     public void testCreateGraph() {
         assertTrue(g.getVertices().isEmpty());
         assertTrue(g.getEdges().isEmpty());
-        assertEquals(g.getSize(), 0);
     }
 
     @Test
@@ -66,36 +65,34 @@ class GraphTest {
 
         assertEquals(g.getVertices().size(), 10);
         assertEquals(g.getEdges().size(), 8);
-        assertEquals(g.getSize(), 10);
     }
 
     @Test
     public void testCreateGraphFromFile() {
         try {
-            g = new Graph(new File("sample_graph.gssf"));
+            g = new Graph(Paths.get("graph_sample.json"));
         } catch (IOException ioe) {
             fail("should not reach this point");
         }
 
         assertEquals(g.getVertices().size(), 10);
         assertEquals(g.getEdges().size(), 8);
-        assertEquals(g.getSize(), 10);
     }
 
     @Test
     public void testCreateGraphFromNonexistantFile() {
         try {
-            g = new Graph(new File("not_like_i_am_real.gssf"));
+            g = new Graph(Paths.get("graph_not_like_i_am_real.json"));
         } catch (IOException ioe) {
-            assertEquals(ioe.getMessage(), "not_like_i_am_real.gssf (The system cannot find the file specified)");
+            assertEquals(ioe.getMessage(), "graph_not_like_i_am_real.json");
         }
     }
 
     @Test
     public void testCreateGraphFromCorruptedFile() {
         try {
-            g = new Graph(new File("corrupt_graph.gssf"));
-        } catch (IOException ioe) {
+            g = new Graph(Paths.get("graph_corrupted.json"));
+        } catch (Exception ioe) {
             assertEquals(ioe.getMessage(), "Graph file is corrupted or probably deleted.");
         }
     }

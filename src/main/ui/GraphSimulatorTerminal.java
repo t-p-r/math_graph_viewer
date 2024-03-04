@@ -5,13 +5,13 @@ import java.util.Scanner;
 import model.*;
 import model.exception.*;
 import java.time.LocalDateTime;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
+
+import org.json.JSONObject;
 
 // Terminal app for personal project.
 public class GraphSimulatorTerminal {
@@ -204,38 +204,21 @@ public class GraphSimulatorTerminal {
         mainGraph = new Graph();
     }
 
-    // EFFECT: save the current Graph to the file "yyyyMMdd_HHmmss.gssf"
-    // (e.g. the file created on 15:45:17, Feb 14th 2024 is "20240214_154517.gssf")
-    // Saved files have the form:
-    // <number of vertices> <number of edges>
-    // <label of first vertex>
-    // ...
-    // <label of last vertex>
-    // <label of first vertex of first edge> <label of second vertex of first edge>
-    // ...
-    // <label of first vertex of last edge> <label of second vertex of last edge>
+    // EFFECT: save the current Graph to the file "graph_yyyyMMdd_HHmmss.json"
+    // (e.g. the file created on 15:45:17, Feb 14th 2024 is
+    // "graph_20240214_154517.json")
+    // Saved files have the form described in Graph::toJSON().
     // Any IOException occured is unexpected and shall be outputed along with the
     // trace stack.
     private void saveGraph() {
-        String currentTimeFormatted = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String currentTimeFormatted = "graph_"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         try {
-            FileWriter saveFile = new FileWriter(currentTimeFormatted + ".gssf");
-            List<Vertex> vertices = mainGraph.getVertices();
-            List<Edge> edges = mainGraph.getEdges();
-
-            saveFile.write(Integer.toString(vertices.size()) + " ");
-            saveFile.write(Integer.toString(edges.size()) + "\n");
-
-            for (Vertex v : vertices) {
-                saveFile.write(Integer.toString(v.getLabel()) + "\n");
-            }
-            for (Edge e : edges) {
-                saveFile.write(Integer.toString(e.getBeginVertex().getLabel()) + " ");
-                saveFile.write(Integer.toString(e.getEndVertex().getLabel()) + "\n");
-            }
-
+            PrintWriter saveFile = new PrintWriter(currentTimeFormatted + ".json");
+            JSONObject json = mainGraph.toJSON();
+            saveFile.print(json);
             saveFile.close();
-            System.out.println("Saved current graph to file " + currentTimeFormatted + ".gssf.");
+            System.out.println("Saved current graph to file " + currentTimeFormatted + ".json.");
         } catch (IOException ioe) {
             System.out.println("Unexpected file error.");
             ioe.printStackTrace();
@@ -263,7 +246,7 @@ public class GraphSimulatorTerminal {
 
                 int index = getInput.nextInt();
                 if (1 <= index && index <= fileList.size()) {
-                    mainGraph = new Graph(new File(fileList.get(index - 1)));
+                    mainGraph = new Graph(Paths.get(fileList.get(index - 1)));
                     System.out.println("Loaded graph saved in file " + fileList.get(index - 1) + ".");
                 } else {
                     System.out.println("Operation aborted.");
@@ -287,7 +270,8 @@ public class GraphSimulatorTerminal {
                     .map(Path::getFileName)
                     .map(Path::toString)
                     .collect(Collectors.toList());
-            fileList.removeIf(s -> !s.contains("gssf"));
+            fileList.removeIf(s -> !s.contains(".json")); // kinda looks like std::concept eh
+            fileList.removeIf(s -> !s.contains("graph"));
             return fileList;
         } catch (IOException ioe) {
             System.out.println("Unexpected file error.");
