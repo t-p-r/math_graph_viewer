@@ -115,6 +115,9 @@ public class GraphSimulatorTerminal {
             case "Q":
                 stillRunning = false;
                 break;
+            default:
+                System.out.println("Invalid command.");
+                break;
         }
     }
 
