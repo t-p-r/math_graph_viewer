@@ -231,4 +231,58 @@ public class Graph {
         json.put("edges", edgesToJSON());
         return json;
     }
+
+    // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
+    // getVertices()
+    public JSONArray verticesToJSON() {
+        JSONArray jsonArray = new JSONArray();
+        for (Vertex v : vertices) {
+            jsonArray.put(v.toJSON());
+        }
+        return jsonArray;
+    }
+
+    // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
+    // getEdges()
+    public JSONArray edgesToJSON() {
+        JSONArray jsonArray = new JSONArray();
+        for (Edge e : getEdges()) {
+            jsonArray.put(e.toJSON());
+        }
+        return jsonArray;
+    }
+    // EFFECT: Convert the current graph into a JSONObject with the form:
+    // ```{
+    // "numOfVertices": <n>,
+    // "numofEdges": <m>,
+    // "vertices": [
+    // {
+    // "label": <v_1>
+    // },
+    // ...,
+    // {
+    // "label": <v_n>
+    // }
+    // ],
+
+    // "edges": [
+    // {
+    // "beginLabel": <u_1>,
+    // "endLabel" : <v_1>
+    // },
+    // ...,
+    // {
+    // "beginLabel": <u_m>,
+    // "endLabel" : <v_m>
+    // }
+    // ]
+    // }```
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("numOfVertices", getVertices().size());
+        json.put("numOfEdges", getEdges().size());
+        json.put("vertices", verticesToJSON());
+        json.put("edges", edgesToJSON());
+        return json;
+    }
 }
