@@ -70,7 +70,7 @@ class GraphTest {
     @Test
     public void testCreateGraphFromFile() {
         try {
-            g = new Graph(Paths.get("graph_sample.json"));
+            g = new Graph(Paths.get("./data/graph_sample.json"));
         } catch (IOException ioe) {
             fail("should not reach this point");
         }
@@ -82,16 +82,16 @@ class GraphTest {
     @Test
     public void testCreateGraphFromNonexistantFile() {
         try {
-            g = new Graph(Paths.get("graph_not_like_i_am_real.json"));
+            g = new Graph(Paths.get("./data/graph_not_like_i_am_real.json"));
         } catch (IOException ioe) {
-            assertEquals(ioe.getMessage(), "graph_not_like_i_am_real.json");
+            assertEquals(ioe.getMessage(), ".\\data\\graph_not_like_i_am_real.json");
         }
     }
 
     @Test
     public void testCreateGraphFromCorruptedFile() {
         try {
-            g = new Graph(Paths.get("graph_corrupted.json"));
+            g = new Graph(Paths.get("./data/graph_corrupted.json"));
         } catch (Exception ioe) {
             assertEquals(ioe.getMessage(), "Graph file is corrupted or probably deleted.");
         }

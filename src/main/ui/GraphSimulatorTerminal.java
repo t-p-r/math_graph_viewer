@@ -214,7 +214,7 @@ public class GraphSimulatorTerminal {
     // Any IOException occured is unexpected and shall be outputed along with the
     // trace stack.
     private void saveGraph() {
-        String currentTimeFormatted = "graph_"
+        String currentTimeFormatted = "./data/graph_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         try {
             PrintWriter saveFile = new PrintWriter(currentTimeFormatted + ".json");
@@ -249,7 +249,7 @@ public class GraphSimulatorTerminal {
 
                 int index = getInput.nextInt();
                 if (1 <= index && index <= fileList.size()) {
-                    mainGraph = new Graph(Paths.get(fileList.get(index - 1)));
+                    mainGraph = new Graph(Paths.get("./data/" + fileList.get(index - 1)));
                     System.out.println("Loaded graph saved in file " + fileList.get(index - 1) + ".");
                 } else {
                     System.out.println("Operation aborted.");
@@ -269,7 +269,7 @@ public class GraphSimulatorTerminal {
     // trace stack, in which case the function returns null.
     public List<String> getSavedGraphFiles() {
         try {
-            List<String> fileList = Files.list(Paths.get("")).filter(file -> !Files.isDirectory(file))
+            List<String> fileList = Files.list(Paths.get("./data/")).filter(file -> !Files.isDirectory(file))
                     .map(Path::getFileName)
                     .map(Path::toString)
                     .collect(Collectors.toList());
