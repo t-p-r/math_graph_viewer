@@ -197,6 +197,7 @@ public class Graph {
         }
         return jsonArray;
     }
+    
     // EFFECT: Convert the current graph into a JSONObject with the form:
     // ```{
     // "numOfVertices": <n>,

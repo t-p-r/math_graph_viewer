@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +49,7 @@ class GraphTest {
 
     @Test
     public void compositeTest() {
-        // same as sample_graph.gssf; to check if Jacoco is on ketamine
+        // same as ./data/graph_sample.json; to check if Jacoco is on ketamine
         // update: Jacoco IS on ketamine
         for (int i = 1; i <= 10; i++) {
             safeAddVertex(i);
@@ -65,6 +66,19 @@ class GraphTest {
 
         assertEquals(g.getVertices().size(), 10);
         assertEquals(g.getEdges().size(), 8);
+    }
+
+    @Test
+    public void jsonTest() {
+        try {
+            g = new Graph(Paths.get("./data/graph_samplesmall.json"));
+        } catch (IOException ioe) {
+            fail("should not reach this point");
+        }
+        JSONObject json = g.toJson();
+        assertEquals(json.toString(),
+                "{\"numOfEdges\":1,\"numOfVertices\":2,\"vertices\":[{\"label\":1},"
+                        + "{\"label\":2}],\"edges\":[{\"endLabel\":2,\"beginLabel\":1}]}");
     }
 
     @Test
