@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // Vertices in graph implementation. Uses an adjacent list which connects to edges and not other vertices directly.
 // Instantiated vertices MUST have a non-zero label. Uninstantiated vertices have a label of -1.
-public class Vertex {
+public class Vertex implements Writable {
     private int label = -1;
     private List<Edge> adjacent;
 

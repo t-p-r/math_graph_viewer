@@ -2,9 +2,11 @@ package model;
 
 import org.json.JSONObject;
 
+import persistence.Writable;
+
 // Edges in graph implementation.
 // Instantiated edges must have a non-zero label. Uninstantiated edges have a label of -1.
-public class Edge {
+public class Edge implements Writable {
     private Vertex beginVertex;
     private Vertex endVertex;
     // private int label = -1;

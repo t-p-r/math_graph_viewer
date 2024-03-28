@@ -10,12 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import model.exception.*;
+import persistence.Writable;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 // Directed graph implementation. Assumes that all vertices has distinct labels, and all labels are non-negative.
-public class Graph {
+public class Graph implements Writable {
     private List<Vertex> vertices;
     private Map<Integer, Vertex> labelToVertex;
 
@@ -197,7 +198,7 @@ public class Graph {
         }
         return jsonArray;
     }
-    
+
     // EFFECT: Convert the current graph into a JSONObject with the form:
     // ```{
     // "numOfVertices": <n>,

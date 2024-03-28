@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import model.*;
 import model.exception.*;
+import persistence.GraphWriter;
+
 import java.time.LocalDateTime;
 import java.io.*;
 import java.nio.file.*;
@@ -19,6 +21,7 @@ public class GraphSimulatorTerminal {
     private static final int REMOVE_ACTION = 2;
     private static final int LIGHT_COMMAND_LENGTH = 2;
     private static final int HEAVY_COMMAND_LENGTH = 1;
+    private static final String SAVE_DIR = "./data/";
     private Graph mainGraph;
     private Scanner getInput;
     private boolean stillRunning = true;
@@ -72,6 +75,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
+    // EFFECT: process one half of user inputs
     private void processLightCommand(String command) {
         switch (command) {
             case "av":
@@ -98,6 +102,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
+    // EFFECT: process the other half of user inputs
     private void processHeavyCommand(String command) {
         switch (command) {
             case "A":
@@ -213,15 +218,14 @@ public class GraphSimulatorTerminal {
     // Saved files have the form described in Graph::toJson().
     // Any IOException occured is unexpected and shall be outputed along with the
     // trace stack.
-    private void saveGraph() {
-        String currentTimeFormatted = "./data/graph_"
+    public void saveGraph() {
+        String saveFileName = SAVE_DIR + "graph_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        GraphWriter graphWriter = new GraphWriter(saveFileName + ".json");
         try {
-            PrintWriter saveFile = new PrintWriter(currentTimeFormatted + ".json");
-            JSONObject json = mainGraph.toJson();
-            saveFile.print(json);
-            saveFile.close();
-            System.out.println("Saved current graph to file " + currentTimeFormatted + ".json.");
+            graphWriter.open();
+            graphWriter.write(mainGraph);
+            graphWriter.close();
         } catch (IOException ioe) {
             System.out.println("Unexpected file error.");
             ioe.printStackTrace();
