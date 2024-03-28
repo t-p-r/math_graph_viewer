@@ -13,7 +13,6 @@ import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
-import org.json.JSONObject;
 
 // Terminal app for personal project.
 public class GraphSimulatorTerminal {
@@ -22,7 +21,7 @@ public class GraphSimulatorTerminal {
     private static final int LIGHT_COMMAND_LENGTH = 2;
     private static final int HEAVY_COMMAND_LENGTH = 1;
     private static final String SAVE_DIR = "./data/";
-    private Graph mainGraph;
+    private Graph currentGraph;
     private Scanner getInput;
     private boolean stillRunning = true;
 
@@ -44,7 +43,7 @@ public class GraphSimulatorTerminal {
     // MODIFIES: this
     // EFFECT: creates a new empty graph and instantiates getInput
     private void init() {
-        mainGraph = new Graph();
+        currentGraph = new Graph();
         getInput = new Scanner(System.in);
     }
 
@@ -132,10 +131,10 @@ public class GraphSimulatorTerminal {
     private void tryVertex(int label, int action) {
         try {
             if (action == ADD_ACTION) {
-                mainGraph.addVertex(label);
+                currentGraph.addVertex(new Vertex(label));
                 System.out.println("Added a vertex with label " + Integer.toString(label) + ".");
             } else if (action == REMOVE_ACTION) {
-                mainGraph.removeVertex(label);
+                currentGraph.removeVertex(label);
                 System.out.println("Removed a vertex with label " + Integer.toString(label) + ".");
             }
         } catch (GraphException ge) {
@@ -151,10 +150,10 @@ public class GraphSimulatorTerminal {
             String message = "from vertex with label " + Integer.toString(label1) + " " + "to vertex with label "
                     + Integer.toString(label2) + ".";
             if (action == ADD_ACTION) {
-                mainGraph.addEdge(label1, label2);
+                currentGraph.addEdge(label1, label2);
                 System.out.println("Added an edge " + message);
             } else if (action == REMOVE_ACTION) {
-                if (mainGraph.removeEdge(label1, label2)) {
+                if (currentGraph.removeEdge(label1, label2)) {
                     System.out.println("Removed an edge " + message);
                 } else {
                     System.out.println("The specified edge did not exist.");
@@ -169,7 +168,7 @@ public class GraphSimulatorTerminal {
     // EFFECT: list labels of vertices currently in the graph
     private void listVertices() {
         System.out.println("The current graph has vertices with labels:");
-        List<Vertex> vertices = mainGraph.getVertices();
+        List<Vertex> vertices = currentGraph.getVertices();
         for (Vertex v : vertices) {
             System.out.print(Integer.toString(v.getLabel()) + " ");
         }
@@ -179,7 +178,7 @@ public class GraphSimulatorTerminal {
     // EFFECT: list labels of edges currently in the graph
     private void listEdges() {
         System.out.println("The current graph has edges:");
-        List<Edge> edges = mainGraph.getEdges();
+        List<Edge> edges = currentGraph.getEdges();
         for (Edge e : edges) {
             System.out.print("From vertex with label ");
             System.out.print(Integer.toString(e.getBeginVertex().getLabel()) + " ");
@@ -209,7 +208,7 @@ public class GraphSimulatorTerminal {
     // MODIFIES: this
     // EFFECT: resets the current graph to its beginning state
     private void reloadGraph() {
-        mainGraph = new Graph();
+        currentGraph = new Graph();
     }
 
     // EFFECT: save the current Graph to the file "graph_yyyyMMdd_HHmmss.json"
@@ -224,7 +223,7 @@ public class GraphSimulatorTerminal {
         GraphWriter graphWriter = new GraphWriter(saveFileName + ".json");
         try {
             graphWriter.open();
-            graphWriter.write(mainGraph);
+            graphWriter.write(currentGraph);
             graphWriter.close();
         } catch (IOException ioe) {
             System.out.println("Unexpected file error.");
@@ -253,7 +252,7 @@ public class GraphSimulatorTerminal {
 
                 int index = getInput.nextInt();
                 if (1 <= index && index <= fileList.size()) {
-                    mainGraph = new Graph(Paths.get("./data/" + fileList.get(index - 1)));
+                    currentGraph = new Graph(Paths.get("./data/" + fileList.get(index - 1)));
                     System.out.println("Loaded graph saved in file " + fileList.get(index - 1) + ".");
                 } else {
                     System.out.println("Operation aborted.");

@@ -1,12 +1,14 @@
 package model;
 
+import java.awt.*;
+
 import org.json.JSONObject;
 
 import persistence.Writable;
 
 // Edges in graph implementation.
 // Instantiated edges must have a non-zero label. Uninstantiated edges have a label of -1.
-public class Edge implements Writable {
+public class Edge implements Writable, Shape {
     private Vertex beginVertex;
     private Vertex endVertex;
     // private int label = -1;
@@ -49,13 +51,26 @@ public class Edge implements Writable {
 
     // EFFECTS: return a JSON object in the form
     // {
-    //      "beginLabel": beginVertex.label,
-    //      "endLabel" : endVertex.label
+    // "beginLabel": beginVertex.label,
+    // "endLabel" : endVertex.label
     // },
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("beginLabel", getBeginVertex().getLabel());
         json.put("endLabel", getEndVertex().getLabel());
         return json;
+    }
+
+    public void draw(Graphics g) {
+        Color initialColor = g.getColor();
+        g.setColor(Color.green);
+        drawGraphics(g);
+        g.setColor(initialColor);
+    }
+
+    // EFFECTS: draws a circle of radius RADIUS representing the vertex
+    private void drawGraphics(Graphics g) {
+        g.drawLine(beginVertex.getX() + beginVertex.getRadius(), beginVertex.getY() + beginVertex.getRadius(),
+                endVertex.getX(), endVertex.getY());
     }
 }
