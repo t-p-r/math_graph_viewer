@@ -66,7 +66,7 @@ class GraphTest {
 
         assertTrue(g.hasEdge(1, 5));
         assertTrue(g.hasEdge(2, 7));
-        assertFalse(g.hasEdge(1,69420));
+        assertFalse(g.hasEdge(1, 69420));
         assertFalse(g.hasEdge(9, 8));
 
         assertEquals(g.getVertices().size(), 10);
@@ -274,7 +274,7 @@ class GraphTest {
         }
 
         try {
-            g.removeEdge(5, 1); 
+            g.removeEdge(5, 1);
         } catch (GraphException ge) {
             fail("should not reach this point");
         }
