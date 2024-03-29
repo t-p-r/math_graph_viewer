@@ -17,8 +17,9 @@ public class Vertex implements Writable, Shape {
     private static final Color IDLE_COLOR = Color.orange;
     private static final Color ACTIVE_COLOR = Color.red;
     private boolean isActive; // whether the Vertex is being HOVERED ON by a mouse
-    private int xPos;
-    private int yPos; // coordinates
+
+    private int x;
+    private int y;
 
     // REQUIRES: label >= 0
     // EFFECTS: creates a new vertex with said label and no adjacent vertices
@@ -31,8 +32,8 @@ public class Vertex implements Writable, Shape {
     // EFFECTS: creates a new vertex with said label and no adjacent vertices
     public Vertex(int label, int x, int y) {
         this.label = label;
-        this.xPos = x; // offset by RADIUS/2
-        this.yPos = y; // so that the circle is centered around the mouse when spawn
+        this.x = x; // offset by RADIUS/2
+        this.y = y; // so that the circle is centered around the mouse when spawn
         this.adjacent = new ArrayList<>();
     }
 
@@ -75,8 +76,8 @@ public class Vertex implements Writable, Shape {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("label", this.label);
-        json.put("x", this.xPos);
-        json.put("y", yPos);
+        json.put("x", this.x);
+        json.put("y", y);
         return json;
     }
 
@@ -87,15 +88,15 @@ public class Vertex implements Writable, Shape {
     // else, Shape is unfilled (white)
     public void draw(Graphics g) {
         Color initialColor = g.getColor();
-        g.drawOval(xPos - RADIUS / 2, yPos - RADIUS / 2, RADIUS, RADIUS);
+        g.drawOval(x - RADIUS / 2, y - RADIUS / 2, RADIUS, RADIUS);
         if (isActive) {
             g.setColor(ACTIVE_COLOR);
         } else {
             g.setColor(IDLE_COLOR);
         }
-        g.fillOval(xPos - RADIUS / 2, yPos - RADIUS / 2, RADIUS, RADIUS);
+        g.fillOval(x - RADIUS / 2, y - RADIUS / 2, RADIUS, RADIUS);
         g.setColor(initialColor);
-        g.drawString(Integer.toString(getLabel()), xPos - 3, yPos + 4); // draw label
+        g.drawString(Integer.toString(getLabel()), x - 3, y + 4); // draw label
     }
 
     // GUI-only.
@@ -104,7 +105,8 @@ public class Vertex implements Writable, Shape {
     // representing the Vertex
     public boolean contains(Point point) {
         // Pythagoras' theorem
-        return (point.x - this.xPos) * (point.x - this.xPos) + (point.y - this.yPos) * (point.y - this.yPos) <= RADIUS * RADIUS;
+        return (point.x - this.x) * (point.x - this.x)
+                + (point.y - this.y) * (point.y - this.y) <= RADIUS * RADIUS;
     }
 
     // GUI-only.
@@ -116,20 +118,20 @@ public class Vertex implements Writable, Shape {
     // GUI-only.
     // EFFECT: move the Vertex to a new location.
     public void setPos(Point point) {
-        this.xPos = point.x;
-        this.yPos = point.y;
+        this.x = point.x;
+        this.y = point.y;
     }
 
     public int getLabel() {
         return this.label;
     }
 
-    public int getxPos() {
-        return this.xPos;
+    public int getX() {
+        return this.x;
     }
 
-    public int getyPos() {
-        return this.yPos;
+    public int getY() {
+        return this.y;
     }
 
     public boolean getActive() {
