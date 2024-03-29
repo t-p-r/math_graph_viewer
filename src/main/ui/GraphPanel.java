@@ -12,6 +12,7 @@ import persistence.GraphWriter;
 import java.awt.*;
 import java.awt.event.*;
 
+// A panel containg a Graph and load/save buttons.
 public class GraphPanel extends JPanel {
     private static final String DATA_DIR = "./data/";
     private Graph currentGraph;
@@ -19,6 +20,8 @@ public class GraphPanel extends JPanel {
     private JButton load;
     private JButton save;
 
+    // EFFECTS: create a GraphPanel with a white background. The initial Graph is
+    // empty.
     public GraphPanel() {
         super();
         currentGraph = new Graph();
@@ -31,18 +34,22 @@ public class GraphPanel extends JPanel {
         save.addActionListener(new SaveGraph());
     }
 
+    // MODIFIES: this
+    // EFFECTS: draw the Graph onto the canvas. First draw edges, then vertices
+    // (so that edge lines doesn't overlap with the Vertex circles).
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (Vertex v : currentGraph.getVertices()) {
-            v.draw(g);
-        }
         for (Edge e : currentGraph.getEdges()) {
             e.draw(g);
         }
+        for (Vertex v : currentGraph.getVertices()) {
+            v.draw(g);
+        }
     }
 
-    // EFFECT: handle an event where the mouse was clicked
+    // MODIFIES: this
+    // EFFECTS: handle an event where the mouse was clicked
     // if single-click AND the position is empty, create a new vertex at said
     // position.
     // if single-click AND a vertex is in that position:
@@ -64,7 +71,7 @@ public class GraphPanel extends JPanel {
                     }
                     clearActive();
                 } else {
-                    saveActive(e.getPoint());
+                    saveSelected(e.getPoint());
                 }
             }
         } else if (e.getClickCount() == 2) {
@@ -73,7 +80,8 @@ public class GraphPanel extends JPanel {
         }
     }
 
-    // EFFECT: handle an event where the mouse was dragged
+    // MODIFIES: this
+    // EFFECTS: handle an event where the mouse was dragged
     // if the position is occupied by a vertex, move said vertex to a new location
     // (provided that that position is not yet occupied by any other vertices)
     public void handleMouseDragged(MouseEvent e) {
@@ -83,14 +91,19 @@ public class GraphPanel extends JPanel {
         }
     }
 
+    // EFFECTS: returns the first Vertex found contaning pos, or null if there is
+    // none.
     public Vertex vertexAtPos(Point pos) {
         return currentGraph.vertexAtPos(pos);
     }
 
+    // EFFECTS: returns the number of Vertex found contaning pos.
     public int numOfVertexAtPos(Point pos) {
         return currentGraph.numOfVertexAtPos(pos);
     }
 
+    // MODIFIES: this
+    // EFFECTS: add a Vertex onto the canvas.
     public boolean addVertex(Point pos) {
         try {
             if (numOfVertexAtPos(pos) == 0) {
@@ -105,6 +118,8 @@ public class GraphPanel extends JPanel {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: remove the first Vertex found containg pos.
     public void removeVertex(Point pos) {
         try {
             if (numOfVertexAtPos(pos) > 0) {
@@ -116,16 +131,20 @@ public class GraphPanel extends JPanel {
         }
     }
 
-    public void saveActive(Point pos) {
+    // MODIFIES: this
+    // EFFECTS: mark the first Vertex found occupying pos as active.
+    public void saveSelected(Point pos) {
         lastActive = currentGraph.vertexAtPos(pos);
         if (lastActive != null) {
-            lastActive.setActive(true);
+            lastActive.setSelected(true);
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: deactive lastActive and set it to null.
     public void clearActive() {
         if (lastActive != null) {
-            lastActive.setActive(false);
+            lastActive.setSelected(false);
         }
         lastActive = null;
     }
@@ -135,6 +154,8 @@ public class GraphPanel extends JPanel {
     }
 
     class LoadGraph implements ActionListener {
+        // EFFECTS: Present the user with a file explorer. The file chosen will be loaded
+        // onto the Graph.
         public void actionPerformed(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(DATA_DIR);
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
@@ -152,6 +173,9 @@ public class GraphPanel extends JPanel {
     }
 
     class SaveGraph implements ActionListener {
+        // MODIFIES: the file chosen by the user
+        // EFFECTS: Present the user with a file explorer. Save the Graph at the location
+        // chosen by the user.
         public void actionPerformed(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(DATA_DIR);
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));

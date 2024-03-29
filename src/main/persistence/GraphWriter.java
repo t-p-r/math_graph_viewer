@@ -26,7 +26,7 @@ public class GraphWriter {
         writer = new PrintWriter(new File(destination));
     }
 
-    // MODIFIES: this
+    // MODIFIES: the file whose path is destination
     // EFFECTS: writes JSON representation of workroom to file
     public void write(Graph g) {
         JSONObject json = g.toJson();

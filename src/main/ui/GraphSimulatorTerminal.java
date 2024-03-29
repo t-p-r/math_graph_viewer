@@ -41,13 +41,13 @@ public class GraphSimulatorTerminal {
     }
 
     // MODIFIES: this
-    // EFFECT: creates a new empty graph and instantiates getInput
+    // EFFECTS: creates a new empty graph and instantiates getInput
     private void init() {
         currentGraph = new Graph();
         getInput = new Scanner(System.in);
     }
 
-    // EFFECT: display available commands to the user
+    // EFFECTS: display available commands to the user
     private void displayOptions() {
         System.out.println(" \"av LABEL\" to add a vertex to the graph, or");
         System.out.println(" \"rv LABEL\" to remove a existing vertex from the graph, or");
@@ -62,7 +62,7 @@ public class GraphSimulatorTerminal {
         System.out.println(" \"Q\" to quit.");
     }
 
-    // EFFECT: process user input.
+    // EFFECTS: process user input.
     private void processCommand() {
         String command = getInput.next();
         if (command.length() == LIGHT_COMMAND_LENGTH) {
@@ -74,7 +74,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
-    // EFFECT: process one half of user inputs
+    // EFFECTS: process one half of user inputs
     private void processLightCommand(String command) {
         switch (command) {
             case "av":
@@ -101,7 +101,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
-    // EFFECT: process the other half of user inputs
+    // EFFECTS: process the other half of user inputs
     private void processHeavyCommand(String command) {
         switch (command) {
             case "A":
@@ -126,7 +126,7 @@ public class GraphSimulatorTerminal {
     }
 
     // MODIFIES: this
-    // EFFECT: attempts to add/remove a vertex. Outputs the first exception's
+    // EFFECTS: attempts to add/remove a vertex. Outputs the first exception's
     // message, if any.
     private void tryVertex(int label, int action) {
         try {
@@ -143,7 +143,7 @@ public class GraphSimulatorTerminal {
     }
 
     // MODIFIES: this
-    // EFFECT: attempts to add/remove an edge. Outputs the first exception's
+    // EFFECTS: attempts to add/remove an edge. Outputs the first exception's
     // message, if any.
     private void tryEdge(int label1, int label2, int action) {
         try {
@@ -165,7 +165,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
-    // EFFECT: list labels of vertices currently in the graph
+    // EFFECTS: list labels of vertices currently in the graph
     private void listVertices() {
         System.out.println("The current graph has vertices with labels:");
         List<Vertex> vertices = currentGraph.getVertices();
@@ -175,26 +175,26 @@ public class GraphSimulatorTerminal {
         System.out.println("");
     }
 
-    // EFFECT: list labels of edges currently in the graph
+    // EFFECTS: list labels of edges currently in the graph
     private void listEdges() {
         System.out.println("The current graph has edges:");
         List<Edge> edges = currentGraph.getEdges();
         for (Edge e : edges) {
             System.out.print("From vertex with label ");
-            System.out.print(Integer.toString(e.getfirstVertex().getLabel()) + " ");
+            System.out.print(Integer.toString(e.getFirstVertex().getLabel()) + " ");
             System.out.print("to vertex with label ");
-            System.out.println(Integer.toString(e.getsecondVertex().getLabel()) + ".");
+            System.out.println(Integer.toString(e.getSecondVertex().getLabel()) + ".");
         }
     }
 
-    // EFFECT: presents a list of algorithms that can be run on the current graph.
+    // EFFECTS: presents a list of algorithms that can be run on the current graph.
     // Run the one chosen by the user.
     private void runAlgorithms() {
         System.out.println("Currently no algorithms are available.");
     }
 
     // MODIFIES: this
-    // EFFECT: reloadGraph() only if the user types "YOLO".
+    // EFFECTS: reloadGraph() only if the user types "YOLO".
     private void tryReloadGraph() {
         System.out.println("This action is irreversible. If you really intends to do this, type \"YOLO\" below:");
         if (getInput.next().equals("YOLO")) {
@@ -206,12 +206,12 @@ public class GraphSimulatorTerminal {
     }
 
     // MODIFIES: this
-    // EFFECT: resets the current graph to its beginning state
+    // EFFECTS: resets the current graph to its beginning state
     private void reloadGraph() {
         currentGraph = new Graph();
     }
 
-    // EFFECT: save the current Graph to the file "graph_yyyyMMdd_HHmmss.json"
+    // EFFECTS: save the current Graph to the file "graph_yyyyMMdd_HHmmss.json"
     // (e.g. the file created on 15:45:17, Feb 14th 2024 is
     // "graph_20240214_154517.json")
     // Saved files have the form described in Graph::toJson().
@@ -232,7 +232,7 @@ public class GraphSimulatorTerminal {
     }
 
     // MODIFIES: this
-    // EFFECT: present the user with a list of saved graph files that can be chosen
+    // EFFECTS: present the user with a list of saved graph files that can be chosen
     // to loaded.
     // Load the one chosen by the user; abort otherwise.
     // If a GraphException occurs, output the message.
@@ -265,7 +265,7 @@ public class GraphSimulatorTerminal {
         }
     }
 
-    // EFFECT: get a list of saved graph files (i.e. those ending in ".gssf")
+    // EFFECTS: get a list of saved graph files (i.e. those ending in ".gssf")
     // Doesn't check for corruption signs, which is the responsibility of functions
     // calling this.
     // Any IOException occured is unexpected and shall be outputed along with the

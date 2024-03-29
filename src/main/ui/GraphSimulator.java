@@ -15,7 +15,7 @@ public class GraphSimulator extends JFrame {
 
     private GraphPanel graphPanel;
 
-    // ctor
+    // EFFECTS: create a new GraphSimulator with an empty Graph and load/save buttons.
     public GraphSimulator() {
         super("Graph Simulator");
         initializeGraphics(); // from SimpleDrawingPlayer
@@ -53,7 +53,8 @@ public class GraphSimulator extends JFrame {
         validate();
     }
 
-    // EFFECT: handle an event where the mouse was clicked
+    // MODIFIES: this
+    // EFFECTS: handle an event where the mouse was clicked
     public void handleMouseClicked(MouseEvent e) {
         try {
             graphPanel.handleMouseClicked(e);
@@ -64,7 +65,8 @@ public class GraphSimulator extends JFrame {
         }
     }
 
-    // EFFECT: handle an event where the mouse was dragged
+    // MODIFIES: this
+    // EFFECTS: handle an event where the mouse was dragged
     public void handleMouseDragged(MouseEvent e) {
         graphPanel.handleMouseDragged(e);
         repaint();
@@ -72,17 +74,6 @@ public class GraphSimulator extends JFrame {
 
     // Originaly from SimpleDrawingPlayer
     private class MouseListener extends MouseAdapter {
-
-        // EFFECTS: Forward mouse pressed event to the active tool
-        // public void mousePressed(MouseEvent e) {
-        // handleMousePressed(translateEvent(e));
-        // }
-
-        // // EFFECTS: Forward mouse released event to the active tool
-        // public void mouseReleased(MouseEvent e) {
-        // handleMouseReleased(translateEvent(e));
-        // }
-
         // EFFECTS: Forward mouse clicked event to the active tool
         public void mouseClicked(MouseEvent e) {
             handleMouseClicked(translateEvent(e));

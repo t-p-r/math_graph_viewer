@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.io.File;
-import java.nio.file.*;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ class GraphTest {
     }
 
     // REQUIRES: label >= 0, label must exist
-    // EFFECT: bypasses repetitive try-catch blocks
+    // EFFECTS: bypasses repetitive try-catch blocks
     public void safeAddVertex(int label) {
         try {
             g.addVertex(label);
@@ -33,7 +32,7 @@ class GraphTest {
     }
 
     // REQUIRES: beginLabel >= 0, endLabel >=0, either labels must exist
-    // EFFECT: bypasses repetitive try-catch blocks
+    // EFFECTS: bypasses repetitive try-catch blocks
     public void safeAddEdge(int beginLabel, int endLabel) {
         try {
             g.addEdge(beginLabel, endLabel);
@@ -204,8 +203,8 @@ class GraphTest {
         safeAddVertex(20);
         safeAddEdge(10, 20);
 
-        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getfirstVertex().getLabel(), 10);
-        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getsecondVertex().getLabel(), 20);
+        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getFirstVertex().getLabel(), 10);
+        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getSecondVertex().getLabel(), 20);
     }
 
     @Test
