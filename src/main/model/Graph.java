@@ -67,28 +67,6 @@ public class Graph implements Writable {
         return vertexWithLabel(label) != null;
     }
 
-    // EFFECTS: returns the first Vertex found contaning pos, or null if there is
-    // none.
-    public Vertex vertexAtPos(Point pos) {
-        for (Vertex v : getVertices()) {
-            if (v.contains(pos)) {
-                return v;
-            }
-        }
-        return null;
-    }
-
-    // EFFECTS: returns the number of Vertex found contaning pos.
-    public int numOfVertexAtPos(Point pos) {
-        int res = 0;
-        for (Vertex v : getVertices()) {
-            if (v.contains(pos)) {
-                res++;
-            }
-        }
-        return res;
-    }
-
     // EFFECTS: returns a list of edges currently in the graph.
     public List<Edge> getEdges() {
         List<Edge> edges = new ArrayList<>();
@@ -109,6 +87,17 @@ public class Graph implements Writable {
             }
         }
         return false;
+    }
+
+    // EFFECTS: return true if there is an edge connecting any vertices with labels
+    // firstLabel and secondLabel.
+    public boolean hasEdge(int firstLabel, int secondLabel) {
+        Vertex firstVertex = vertexWithLabel(firstLabel);
+        Vertex secondVertex = vertexWithLabel(secondLabel);
+        if (firstVertex == null || secondVertex == null) {
+            return false;
+        }
+        return hasEdge(firstVertex, secondVertex);
     }
 
     // REQUIRES: Vertex doesn't exist before and its label is positive.
@@ -211,7 +200,8 @@ public class Graph implements Writable {
         return removeEdge(firstVertex, secondVertex);
     }
 
-    // EFFECTS: return a JSONArray consisting of JSONObject-s converted from items of
+    // EFFECTS: return a JSONArray consisting of JSONObject-s converted from items
+    // of
     // getVertices()
     public JSONArray verticesToJson() {
         JSONArray jsonArray = new JSONArray();
@@ -221,7 +211,8 @@ public class Graph implements Writable {
         return jsonArray;
     }
 
-    // EFFECTS: return a JSONArray consisting of JSONObject-s converted from items of
+    // EFFECTS: return a JSONArray consisting of JSONObject-s converted from items
+    // of
     // getEdges()
     public JSONArray edgesToJson() {
         JSONArray jsonArray = new JSONArray();
@@ -257,5 +248,27 @@ public class Graph implements Writable {
             }
             i++;
         }
+    }
+
+    // EFFECTS: returns the first Vertex found contaning pos, or null if there is
+    // none.
+    public Vertex vertexAtPos(Point pos) {
+        for (Vertex v : getVertices()) {
+            if (v.contains(pos)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    // EFFECTS: returns the number of Vertex found contaning pos.
+    public int numOfVertexAtPos(Point pos) {
+        int res = 0;
+        for (Vertex v : getVertices()) {
+            if (v.contains(pos)) {
+                res++;
+            }
+        }
+        return res;
     }
 }

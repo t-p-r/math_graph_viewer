@@ -64,6 +64,11 @@ class GraphTest {
         safeAddEdge(10, 3);
         safeAddEdge(7, 5);
 
+        assertTrue(g.hasEdge(1, 5));
+        assertTrue(g.hasEdge(2, 7));
+        assertFalse(g.hasEdge(1,69420));
+        assertFalse(g.hasEdge(9, 8));
+
         assertEquals(g.getVertices().size(), 10);
         assertEquals(g.getEdges().size(), 16);
     }
@@ -249,6 +254,13 @@ class GraphTest {
         }
 
         try {
+            g.removeEdge(10, 69420);
+            fail("should not reach this point");
+        } catch (GraphException ge) {
+            assertEquals(ge.getMessage(), "No vertex with this label currently exists in the graph.");
+        }
+
+        try {
             g.removeEdge(10, 20);
             fail("should not reach this point");
         } catch (GraphException ge) {
@@ -257,6 +269,12 @@ class GraphTest {
 
         try {
             assertFalse(g.removeEdge(1, 5));
+        } catch (GraphException ge) {
+            fail("should not reach this point");
+        }
+
+        try {
+            g.removeEdge(5, 1); 
         } catch (GraphException ge) {
             fail("should not reach this point");
         }

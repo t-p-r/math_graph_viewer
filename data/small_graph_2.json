@@ -1,0 +1,20 @@
+{
+    "numOfEdges": 2,
+    "numOfVertices": 2,
+    "vertices": [
+        {
+            "x": 494,
+            "y": 366,
+            "label": 1
+        },
+        {
+            "x": 736,
+            "y": 362,
+            "label": 2
+        }
+    ],
+    "edges": [{
+        "firstLabel": 1,
+        "secondLabel": 2
+    }]
+}
