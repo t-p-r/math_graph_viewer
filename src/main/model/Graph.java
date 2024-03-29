@@ -57,35 +57,13 @@ public class Graph implements Writable {
                 addEdge(firstVertex, secondVertex);
             }
 
-        } catch (RuntimeException | GraphException ge) {
+        } catch (IOException | GraphException ge) {
             throw new IOException("Graph file is corrupted or probably deleted.");
         }
     }
 
-    // // EFFECT: creates a graph with a predefined size. Label vertices according
-    // // to
-    // // styles defined in the LabelScheme class.
-    // public Graph(int size, int labelScheme) {
-    // vertices = new ArrayList<Vertex>(size);
-
-    // if (labelScheme == LabelScheme.zeroBasedIndex) {
-    // for (int i = 0; i < size; i++) {
-    // vertices.get(i).setLabel(i);
-    // }
-    // } else if (labelScheme == LabelScheme.oneBasedIndex) {
-    // for (int i = 1; i <= size; i++) {
-    // vertices.get(i - 1).setLabel(i);
-    // }
-    // }
-    // }
-
-    // deprecated; use getVertices().size() directly instead.
-    // public int getSize() {
-    // return vertices.size();
-    // }
-
     // EFFECTS: returns the Vertex having this label number; null otherwise
-    public Vertex withLabel(int label) {
+    public Vertex vertexWithLabel(int label) {
         for (Vertex v : getVertices()) {
             if (v.getLabel() == label) {
                 return v;
@@ -96,11 +74,7 @@ public class Graph implements Writable {
 
     // EFFECTS: returns whether the graph has a vertex with this label number
     public boolean containsLabel(int label) {
-        return withLabel(label) != null;
-    }
-
-    public List<Vertex> getVertices() {
-        return vertices;
+        return vertexWithLabel(label) != null;
     }
 
     public Vertex vertexAtPos(Point pos) {
@@ -144,46 +118,48 @@ public class Graph implements Writable {
         return false;
     }
 
+    // REQUIRES: Vertex doesn't exist before and its label is positive.
     // MODIFIES: this
-    // EFFECT: attempts to add a vertex to the graph.
-    // If label is negative, throw NegativeLabelException.
-    // If label already existed, throw UsedLabelException.
+    // EFFECT: Add a Vertex to the graph.
     public void addVertex(Vertex v) throws GraphException {
-        if (v.getLabel() < 0) {
-            throw new NegativeLabelException();
-        }
-        if (containsLabel(v.getLabel())) {
-            throw new UsedLabelException();
-        }
-
         vertices.add(v);
-        // labelToVertex.put(v.getLabel(), v);
     }
 
     // EFFECT: attempts to add an empty vertex with a label to the graph.
+    // If label is negative, throw NegativeLabelException().
+    // If label already existed, throw UsedLabelException().
     public void addVertex(int label) throws GraphException {
+        if (label <= 0) {
+            throw new NegativeLabelException();
+        }
+        if (containsLabel(label)) {
+            throw new UsedLabelException();
+        }
         addVertex(new Vertex(label));
     }
 
+    // REQUIRES: vertex exists
     // MODIFIES: this
-    // EFFECT: attempts to add an empty vertex with a label to the graph.
-    // If label is negative, throw NegativeLabelException.
-    // If label doesn't exist, throw MissingLabelException
-    public void removeVertex(Vertex v) throws GraphException {
-        if (v.getLabel() < 0) {
-            throw new NegativeLabelException();
-        }
-
+    // EFFECT: removes a Vertex from the Graph.
+    public void removeVertex(Vertex v) {
         for (Vertex other : vertices) {
+            v.removeEdge(other);
             other.removeEdge(v);
         }
-
         // labelToVertex.remove(v.getLabel());
         vertices.remove(v);
     }
 
+    // MODIFIES: this
+    // EFFECT: attempts to remove any Vertex having this label number from the
+    // Graph.
+    // If label is negative, throws NegativeLabelException().
+    // If Vertex doesn't exists, throws MissingLabelException().
     public void removeVertex(int label) throws GraphException {
-        Vertex toBeRemoved = withLabel(label);
+        if (label <= 0) {
+            throw new NegativeLabelException();
+        }
+        Vertex toBeRemoved = vertexWithLabel(label);
         if (toBeRemoved == null) {
             throw new MissingLabelException();
         }
@@ -192,27 +168,27 @@ public class Graph implements Writable {
 
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two vertices in the graph.
-    // If either labels is negative, throw NegativeLabelException.
     public void addEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
-        if (firstVertex.getLabel() < 0 || secondVertex.getLabel() < 0) {
-            throw new NegativeLabelException();
-        }
 
-        Vertex begin = withLabel(firstVertex.getLabel());
-        Vertex end = withLabel(secondVertex.getLabel());
+        Vertex begin = vertexWithLabel(firstVertex.getLabel());
+        Vertex end = vertexWithLabel(secondVertex.getLabel());
         begin.addEdge(end);
         end.addEdge(begin);
     }
 
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two labels in the graph.
+    // If either labels is negative, throw NegativeLabelException.
     // If either labels hasn't already existed, throw MissingLabelException.
     public void addEdge(int firstLabel, int secondLabel) throws GraphException {
+        if (firstLabel <= 0 || secondLabel <= 0) {
+            throw new NegativeLabelException();
+        }
         if (!containsLabel(firstLabel) || !containsLabel(secondLabel)) {
             throw new MissingLabelException();
         }
-        Vertex firstVertex = withLabel(firstLabel);
-        Vertex secondVertex = withLabel(secondLabel);
+        Vertex firstVertex = vertexWithLabel(firstLabel);
+        Vertex secondVertex = vertexWithLabel(secondLabel);
         addEdge(firstVertex, secondVertex);
     }
 
@@ -222,10 +198,8 @@ public class Graph implements Writable {
     // If the either vertices hasn't already existed, throw
     // MissingLabelException.
     public boolean removeEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
-        if (!containsLabel(firstVertex.getLabel()) || !containsLabel(secondVertex.getLabel())) {
-            throw new MissingLabelException();
-        }
-        return firstVertex.removeEdge(secondVertex) && secondVertex.removeEdge(firstVertex);
+        return firstVertex.removeEdge(secondVertex)
+                && secondVertex.removeEdge(firstVertex);
     }
 
     // MODIFIES: this
@@ -233,17 +207,20 @@ public class Graph implements Writable {
     // graph.
     // If either labels is negative, throw NegativeLabelException.
     public boolean removeEdge(int firstLabel, int secondLabel) throws GraphException {
-        if (firstLabel < 0 || secondLabel < 0) {
+        if (firstLabel <= 0 || secondLabel <= 0) {
             throw new NegativeLabelException();
         }
-        Vertex firstVertex = withLabel(firstLabel);
-        Vertex secondVertex = withLabel(secondLabel);
+        if (!containsLabel(firstLabel) || !containsLabel(secondLabel)) {
+            throw new MissingLabelException();
+        }
+        Vertex firstVertex = vertexWithLabel(firstLabel);
+        Vertex secondVertex = vertexWithLabel(secondLabel);
         return removeEdge(firstVertex, secondVertex);
     }
 
     // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
     // getVertices()
-    public JSONArray verticestoJson() {
+    public JSONArray verticesToJson() {
         JSONArray jsonArray = new JSONArray();
         for (Vertex v : vertices) {
             jsonArray.put(v.toJson());
@@ -253,51 +230,28 @@ public class Graph implements Writable {
 
     // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of
     // getEdges()
-    public JSONArray edgestoJson() {
+    public JSONArray edgesToJson() {
         JSONArray jsonArray = new JSONArray();
         for (Edge e : getEdges()) {
-            jsonArray.put(e.toJson());
+            if (e.getfirstVertex().getLabel() < e.getsecondVertex().getLabel()) { // prevents duplicating
+                jsonArray.put(e.toJson());
+            }
         }
         return jsonArray;
     }
 
-    // EFFECT: Convert the current graph into a JSONObject with the form:
-    // ```{
-    // "numOfVertices": <n>,
-    // "numofEdges": <m>,
-    // "vertices": [
-    // {
-    // "label": <v_1>
-    // },
-    // ...,
-    // {
-    // "label": <v_n>
-    // }
-    // ],
-
-    // "edges": [
-    // {
-    // "beginLabel": <u_1>,
-    // "endLabel" : <v_1>
-    // },
-    // ...,
-    // {
-    // "beginLabel": <u_m>,
-    // "endLabel" : <v_m>
-    // }
-    // ]
-    // }```
+    // EFFECT: Convert the current graph into a JSONObject.
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("numOfVertices", getVertices().size());
         json.put("numOfEdges", getEdges().size());
-        json.put("vertices", verticestoJson());
-        json.put("edges", edgestoJson());
+        json.put("vertices", verticesToJson());
+        json.put("edges", edgesToJson());
         return json;
     }
 
     // EFFECT: get the first positive number not currently being a label of any
-    // vertex
+    // vertex. Used when adding new vertices in GUI.
     public int firstUnusedLabel() {
         int i = 1;
         while (true) {
@@ -306,5 +260,9 @@ public class Graph implements Writable {
             }
             i++;
         }
+    }
+
+    public List<Vertex> getVertices() {
+        return vertices;
     }
 }

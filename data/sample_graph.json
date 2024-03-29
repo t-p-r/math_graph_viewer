@@ -3,100 +3,68 @@
     "numOfVertices": 6,
     "vertices": [
         {
-            "x": 355,
-            "y": 237,
+            "x": 233,
+            "y": 380,
             "label": 1
         },
         {
-            "x": 575,
-            "y": 573,
-            "label": 2
-        },
-        {
-            "x": 354,
-            "y": 608,
+            "x": 501,
+            "y": 281,
             "label": 3
         },
         {
-            "x": 792,
-            "y": 726,
+            "x": 602,
+            "y": 426,
             "label": 4
         },
         {
-            "x": 676,
-            "y": 264,
+            "x": 719,
+            "y": 253,
             "label": 5
         },
         {
-            "x": 734,
-            "y": 547,
+            "x": 1027,
+            "y": 440,
             "label": 6
+        },
+        {
+            "x": 283,
+            "y": 120,
+            "label": 2
         }
     ],
     "edges": [
         {
             "firstLabel": 1,
-            "secondLabel": 5
-        },
-        {
-            "firstLabel": 1,
             "secondLabel": 3
         },
         {
             "firstLabel": 1,
-            "secondLabel": 4
-        },
-        {
-            "firstLabel": 2,
-            "secondLabel": 3
-        },
-        {
-            "firstLabel": 2,
-            "secondLabel": 5
-        },
-        {
-            "firstLabel": 2,
-            "secondLabel": 4
-        },
-        {
-            "firstLabel": 3,
-            "secondLabel": 1
-        },
-        {
-            "firstLabel": 3,
             "secondLabel": 2
         },
         {
-            "firstLabel": 4,
-            "secondLabel": 1
+            "firstLabel": 3,
+            "secondLabel": 4
+        },
+        {
+            "firstLabel": 3,
+            "secondLabel": 5
+        },
+        {
+            "firstLabel": 3,
+            "secondLabel": 6
         },
         {
             "firstLabel": 4,
             "secondLabel": 6
         },
         {
-            "firstLabel": 4,
-            "secondLabel": 2
-        },
-        {
-            "firstLabel": 5,
-            "secondLabel": 1
-        },
-        {
             "firstLabel": 5,
             "secondLabel": 6
         },
         {
-            "firstLabel": 5,
-            "secondLabel": 2
-        },
-        {
-            "firstLabel": 6,
-            "secondLabel": 4
-        },
-        {
-            "firstLabel": 6,
-            "secondLabel": 5
+            "firstLabel": 2,
+            "secondLabel": 3
         }
     ]
 }

@@ -29,7 +29,7 @@ class GraphTest {
         } catch (GraphException ge) {
             fail("should not reach this point");
         }
-        assertEquals(g.withLabel(label).getLabel(), label);
+        assertEquals(g.vertexWithLabel(label).getLabel(), label);
     }
 
     // REQUIRES: beginLabel >= 0, endLabel >=0, either labels must exist
@@ -78,10 +78,8 @@ class GraphTest {
         }
         JSONObject json = g.toJson();
         assertEquals(json.toString(),
-                "{\"numOfEdges\":4,\"numOfVertices\":2,\"vertices\":[{\"x\":574,\"y\":411,\"label\":1}," +
-                        "{\"x\":627,\"y\":406,\"label\":2}],\"edges\":[{\"firstLabel\":1,\"secondLabel\":2}," +
-                        "{\"firstLabel\":1,\"secondLabel\":2},{\"firstLabel\":2,\"secondLabel\":1}," +
-                        "{\"firstLabel\":2,\"secondLabel\":1}]}");
+                "{\"numOfEdges\":2,\"numOfVertices\":2,\"vertices\":[{\"x\":494,\"y\":366,\"label\":1}," +
+                        "{\"x\":736,\"y\":362,\"label\":2}],\"edges\":[{\"firstLabel\":1,\"secondLabel\":2}]}");
     }
 
     @Test
@@ -93,7 +91,7 @@ class GraphTest {
         }
 
         assertEquals(g.getVertices().size(), 6);
-        assertEquals(g.getEdges().size(), 32);
+        assertEquals(g.getEdges().size(), 16);
     }
 
     @Test
@@ -101,7 +99,7 @@ class GraphTest {
         try {
             g = new Graph(new File("./data/graph_not_like_i_am_real.json"));
         } catch (IOException ioe) {
-            assertEquals(ioe.getMessage(), ".\\data\\graph_not_like_i_am_real.json");
+            assertEquals(ioe.getMessage(), "Graph file is corrupted or probably deleted.");
         }
     }
 
@@ -135,12 +133,11 @@ class GraphTest {
             assertEquals(ge.getMessage(), "Label number has already existed in the graph.");
         }
 
-        g.withLabel(69420).setLabel(1);
+        g.vertexWithLabel(69420).setLabel(1);
         try {
             g.addVertex(69420);
-            fail("should not reach this point");
         } catch (GraphException ge) {
-            assertEquals(ge.getMessage(), "Label number has already existed in the graph.");
+            fail("should not reach this point");
         }
     }
 
@@ -207,8 +204,8 @@ class GraphTest {
         safeAddVertex(20);
         safeAddEdge(10, 20);
 
-        assertEquals(g.withLabel(10).getAdjacent().get(0).getfirstVertex().getLabel(), 10);
-        assertEquals(g.withLabel(10).getAdjacent().get(0).getsecondVertex().getLabel(), 20);
+        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getfirstVertex().getLabel(), 10);
+        assertEquals(g.vertexWithLabel(10).getAdjacent().get(0).getsecondVertex().getLabel(), 20);
     }
 
     @Test
@@ -217,6 +214,7 @@ class GraphTest {
         safeAddVertex(2);
         safeAddVertex(3);
         safeAddVertex(4);
+        safeAddVertex(5);
 
         try {
             g.addEdge(1, 2);
@@ -236,7 +234,7 @@ class GraphTest {
             fail("should not reach this point");
         }
 
-        assertEquals(g.withLabel(1).getAdjacent().size(), 3);
+        assertEquals(g.vertexWithLabel(1).getAdjacent().size(), 3);
         try {
             g.removeEdge(-10, 10);
             fail("should not reach this point");

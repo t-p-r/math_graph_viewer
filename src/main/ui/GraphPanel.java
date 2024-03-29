@@ -69,6 +69,7 @@ public class GraphPanel extends JPanel {
             }
         } else if (e.getClickCount() == 2) {
             removeVertex(e.getPoint());
+            clearActive(); // hard hitting bug
         }
     }
 
@@ -103,34 +104,6 @@ public class GraphPanel extends JPanel {
             return false;
         }
     }
-
-    // public boolean addEdge(Vertex firstVertex, Point pos) {
-    // try {
-    // if (vertexAtPos(pos) != firstVertex) {
-    // currentGraph.addEdge(firstVertex, vertexAtPos(pos));
-    // return true;
-    // }
-    // return false;
-    // } catch (Exception e) {
-    // System.out.println("Unexpected error.");
-    // e.printStackTrace();
-    // return false;
-    // }
-    // }
-
-    // public boolean removeEdge(Vertex firstVertex, Point pos) {
-    // try {
-    // if (vertexAtPos(pos) != firstVertex) {
-    // currentGraph.addEdge(firstVertex, vertexAtPos(pos));
-    // return true;
-    // }
-    // return false;
-    // } catch (Exception e) {
-    // System.out.println("Unexpected error.");
-    // e.printStackTrace();
-    // return false;
-    // }
-    // }
 
     public void removeVertex(Point pos) {
         try {

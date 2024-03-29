@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 
 import java.awt.*;
 
-import model.*;
 import model.exception.GraphException;
 
 public class GraphSimulator extends JFrame {
