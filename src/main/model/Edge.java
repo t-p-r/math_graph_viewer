@@ -44,8 +44,8 @@ public class Edge implements Writable, Shape {
     public void draw(Graphics g) {
         Color initialColor = g.getColor();
         g.setColor(EDGE_COLOR);
-        g.drawLine(firstVertex.getX(), firstVertex.getY(),
-                secondVertex.getX(), secondVertex.getY());
+        g.drawLine(firstVertex.getXpos(), firstVertex.getYpos(),
+                secondVertex.getXpos(), secondVertex.getYpos());
         g.setColor(initialColor);
         firstVertex.draw(g);
         secondVertex.draw(g); // redraw vertices to tidy up
