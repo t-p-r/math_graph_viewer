@@ -252,7 +252,7 @@ public class GraphSimulatorTerminal {
 
                 int index = getInput.nextInt();
                 if (1 <= index && index <= fileList.size()) {
-                    currentGraph = new Graph(Paths.get("./data/" + fileList.get(index - 1)));
+                    currentGraph = new Graph(new File("./data/" + fileList.get(index - 1)));
                     System.out.println("Loaded graph saved in file " + fileList.get(index - 1) + ".");
                 } else {
                     System.out.println("Operation aborted.");

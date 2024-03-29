@@ -71,10 +71,12 @@ public class Vertex implements Writable, Shape {
         return false;
     }
 
-    // EFFECTS: return a JSON object in the form {"label", this.label}
+    // EFFECTS: return a JSON object. Keys are label, x, y
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("label", this.label);
+        json.put("x", this.x);
+        json.put("y", y);
         return json;
     }
 

@@ -57,8 +57,8 @@ public class Edge implements Writable, Shape {
     // },
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("beginLabel", getfirstVertex().getLabel());
-        json.put("endLabel", getsecondVertex().getLabel());
+        json.put("firstLabel", getfirstVertex().getLabel());
+        json.put("secondLabel", getsecondVertex().getLabel());
         return json;
     }
 

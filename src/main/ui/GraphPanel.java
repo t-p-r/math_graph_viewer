@@ -1,20 +1,33 @@
-package model;
+package ui;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import model.Edge;
+import model.Graph;
+import model.Vertex;
 import model.exception.GraphException;
+import persistence.GraphWriter;
 
 import java.awt.*;
 import java.awt.event.*;
 
 public class GraphPanel extends JPanel {
+    private static final String DATA_DIR = "./data/";
     private Graph currentGraph;
     private Vertex lastActive; // to add edges
+    private JButton load, save;
 
     public GraphPanel() {
         super();
         currentGraph = new Graph();
+        load = new JButton("Load");
+        save = new JButton("Save");
         setBackground(Color.white);
+        add(load);
+        add(save);
+        load.addActionListener(new LoadGraph());
+        save.addActionListener(new SaveGraph());
     }
 
     @Override
@@ -45,9 +58,8 @@ public class GraphPanel extends JPanel {
                     // System.out.println("here");
                     Vertex otherVertex = currentGraph.vertexAtPos(e.getPoint());
                     if (currentGraph.hasEdge(lastActive, otherVertex)) {
-                        
                         currentGraph.removeEdge(lastActive, otherVertex);
-                    } else {
+                    } else if (lastActive != otherVertex) {
                         currentGraph.addEdge(lastActive, otherVertex);
                     }
                     clearActive();
@@ -93,31 +105,31 @@ public class GraphPanel extends JPanel {
     }
 
     // public boolean addEdge(Vertex firstVertex, Point pos) {
-    //     try {
-    //         if (vertexAtPos(pos) != firstVertex) {
-    //             currentGraph.addEdge(firstVertex, vertexAtPos(pos));
-    //             return true;
-    //         }
-    //         return false;
-    //     } catch (Exception e) {
-    //         System.out.println("Unexpected error.");
-    //         e.printStackTrace();
-    //         return false;
-    //     }
+    // try {
+    // if (vertexAtPos(pos) != firstVertex) {
+    // currentGraph.addEdge(firstVertex, vertexAtPos(pos));
+    // return true;
+    // }
+    // return false;
+    // } catch (Exception e) {
+    // System.out.println("Unexpected error.");
+    // e.printStackTrace();
+    // return false;
+    // }
     // }
 
     // public boolean removeEdge(Vertex firstVertex, Point pos) {
-    //     try {
-    //         if (vertexAtPos(pos) != firstVertex) {
-    //             currentGraph.addEdge(firstVertex, vertexAtPos(pos));
-    //             return true;
-    //         }
-    //         return false;
-    //     } catch (Exception e) {
-    //         System.out.println("Unexpected error.");
-    //         e.printStackTrace();
-    //         return false;
-    //     }
+    // try {
+    // if (vertexAtPos(pos) != firstVertex) {
+    // currentGraph.addEdge(firstVertex, vertexAtPos(pos));
+    // return true;
+    // }
+    // return false;
+    // } catch (Exception e) {
+    // System.out.println("Unexpected error.");
+    // e.printStackTrace();
+    // return false;
+    // }
     // }
 
     public void removeVertex(Point pos) {
@@ -147,5 +159,42 @@ public class GraphPanel extends JPanel {
 
     public Vertex getLastActive() {
         return lastActive;
+    }
+
+    class LoadGraph implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser chooser = new JFileChooser(DATA_DIR);
+            chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
+            if (chooser.showOpenDialog(GraphPanel.this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    currentGraph = new Graph(chooser.getSelectedFile());
+                    repaint();
+                } catch (Exception ioe) {
+                    System.out.println(
+                            "Unexpected error. The graph file may have been corrupted, deleted or moved elsewhere.");
+                    ioe.printStackTrace();
+                }
+            }
+        }
+    }
+
+    class SaveGraph implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser chooser = new JFileChooser(DATA_DIR);
+            chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
+            if (chooser.showSaveDialog(GraphPanel.this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    System.out.println(chooser.getSelectedFile().getCanonicalPath());
+                    GraphWriter graphWriter = new GraphWriter(chooser.getSelectedFile().getCanonicalPath());
+                    graphWriter.open();
+                    graphWriter.write(currentGraph);
+                    graphWriter.close();
+                } catch (Exception ioe) {
+                    System.out.println(
+                            "Unexpected error. The graph file may have been corrupted, deleted or moved elsewhere.");
+                    ioe.printStackTrace();
+                }
+            }
+        }
     }
 }

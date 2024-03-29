@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.*;
 
 import model.exception.*;
 import persistence.Writable;
@@ -35,20 +36,24 @@ public class Graph implements Writable {
     // <label of first vertex of first edge> <label of second vertex of first edge>
     // ...
     // <label of first vertex of last edge> <label of second vertex of last edge>
-    public Graph(Path path) throws IOException, FileNotFoundException {
+    public Graph(File file) throws IOException, FileNotFoundException {
         vertices = new ArrayList<>();
         // labelToVertex = new HashMap<>();
         try {
-            JSONObject json = new JSONObject(Files.readString(path));
+            JSONObject json = new JSONObject(Files.readString(Path.of(file.toString()), Charset.defaultCharset()));
             JSONArray jsonArray = json.getJSONArray("vertices");
             for (Object obj : jsonArray) {
-                addVertex(new Vertex(((JSONObject) obj).getInt("label")));
+                JSONObject v = (JSONObject) obj;
+                int label = v.getInt("label");
+                int x = v.getInt("x");
+                int y = v.getInt("y");
+                addVertex(new Vertex(label, x, y));
             }
 
             jsonArray = json.getJSONArray("edges");
             for (Object obj : jsonArray) {
-                int firstVertex = ((JSONObject) obj).getInt("beginLabel");
-                int secondVertex = ((JSONObject) obj).getInt("endLabel");
+                int firstVertex = ((JSONObject) obj).getInt("firstLabel");
+                int secondVertex = ((JSONObject) obj).getInt("secondLabel");
                 addEdge(firstVertex, secondVertex);
             }
 

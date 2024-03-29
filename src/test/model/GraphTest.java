@@ -3,7 +3,8 @@ package test.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.File;
+import java.nio.file.*;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,38 +66,40 @@ class GraphTest {
         safeAddEdge(7, 5);
 
         assertEquals(g.getVertices().size(), 10);
-        assertEquals(g.getEdges().size(), 8);
+        assertEquals(g.getEdges().size(), 16);
     }
 
     @Test
     public void jsonTest() {
         try {
-            g = new Graph(Paths.get("./data/graph_samplesmall.json"));
+            g = new Graph(new File("./data/small_graph.json"));
         } catch (IOException ioe) {
             fail("should not reach this point");
         }
         JSONObject json = g.toJson();
         assertEquals(json.toString(),
-                "{\"numOfEdges\":1,\"numOfVertices\":2,\"vertices\":[{\"label\":1},"
-                        + "{\"label\":2}],\"edges\":[{\"endLabel\":2,\"beginLabel\":1}]}");
+                "{\"numOfEdges\":4,\"numOfVertices\":2,\"vertices\":[{\"x\":574,\"y\":411,\"label\":1}," +
+                        "{\"x\":627,\"y\":406,\"label\":2}],\"edges\":[{\"firstLabel\":1,\"secondLabel\":2}," +
+                        "{\"firstLabel\":1,\"secondLabel\":2},{\"firstLabel\":2,\"secondLabel\":1}," +
+                        "{\"firstLabel\":2,\"secondLabel\":1}]}");
     }
 
     @Test
     public void testCreateGraphFromFile() {
         try {
-            g = new Graph(Paths.get("./data/graph_sample.json"));
+            g = new Graph(new File("./data/sample_graph.json"));
         } catch (IOException ioe) {
             fail("should not reach this point");
         }
 
-        assertEquals(g.getVertices().size(), 10);
-        assertEquals(g.getEdges().size(), 8);
+        assertEquals(g.getVertices().size(), 6);
+        assertEquals(g.getEdges().size(), 32);
     }
 
     @Test
     public void testCreateGraphFromNonexistantFile() {
         try {
-            g = new Graph(Paths.get("./data/graph_not_like_i_am_real.json"));
+            g = new Graph(new File("./data/graph_not_like_i_am_real.json"));
         } catch (IOException ioe) {
             assertEquals(ioe.getMessage(), ".\\data\\graph_not_like_i_am_real.json");
         }
@@ -105,7 +108,7 @@ class GraphTest {
     @Test
     public void testCreateGraphFromCorruptedFile() {
         try {
-            g = new Graph(Paths.get("./data/graph_corrupted.json"));
+            g = new Graph(new File("./data/graph_corrupted.json"));
         } catch (Exception ioe) {
             assertEquals(ioe.getMessage(), "Graph file is corrupted or probably deleted.");
         }
