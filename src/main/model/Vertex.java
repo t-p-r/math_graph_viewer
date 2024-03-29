@@ -14,8 +14,8 @@ public class Vertex implements Writable, Shape {
 
     // these are GUI-only
     private static final int RADIUS = 40; // radius of vertex Circle.
-    private static final Color IDLE_COLOR = Color.white;
-    private static final Color ACTIVE_COLOR = Color.orange;
+    private static final Color IDLE_COLOR = Color.orange;
+    private static final Color ACTIVE_COLOR = Color.red;
     private boolean isActive; // whether the Vertex is being HOVERED ON by a mouse
     private int x;
     private int y; // coordinates
@@ -31,8 +31,8 @@ public class Vertex implements Writable, Shape {
     // EFFECTS: creates a new vertex with said label and no adjacent vertices
     public Vertex(int label, int x, int y) {
         this.label = label;
-        this.x = x;
-        this.y = y;
+        this.x = x; // offset by RADIUS/2
+        this.y = y; // so that the circle is centered around the mouse when spawn
         this.adjacent = new ArrayList<>();
     }
 
@@ -63,7 +63,7 @@ public class Vertex implements Writable, Shape {
     // Returns whether an edge was succesfully removed.
     public boolean removeEdge(Vertex other) {
         for (Edge e : adjacent) {
-            if (e.getEndVertex() == other) {
+            if (e.getsecondVertex() == other) {
                 adjacent.remove(e);
                 return true;
             }
@@ -78,42 +78,44 @@ public class Vertex implements Writable, Shape {
         return json;
     }
 
+    // GUI-only.
     // Originaly from SimpleDrawingPlayer
     // EFFECTS: draws this Shape on the SimpleDrawingPlayer, if the shape is
     // selected, Shape is filled in
     // else, Shape is unfilled (white)
     public void draw(Graphics g) {
         Color initialColor = g.getColor();
-        drawGraphics(g);
+        g.drawOval(x - RADIUS / 2, y - RADIUS / 2, RADIUS, RADIUS);
         if (isActive) {
             g.setColor(ACTIVE_COLOR);
         } else {
             g.setColor(IDLE_COLOR);
         }
-        fillGraphics(g);
+        g.fillOval(x - RADIUS / 2, y - RADIUS / 2, RADIUS, RADIUS);
         g.setColor(initialColor);
+        g.drawString(Integer.toString(getLabel()), x - 3, y + 4); // draw label
     }
 
-    // EFFECTS: draws a circle of radius RADIUS representing the vertex
-    private void drawGraphics(Graphics g) {
-        g.drawOval(x, y, RADIUS, RADIUS);
-        g.drawString(Integer.toString(getLabel()), x, y);
-    }
-
-    // EFFECTS: fills the circle above
-    private void fillGraphics(Graphics g) {
-        g.fillOval(x, y, RADIUS, RADIUS);
-    }
-
+    // GUI-only.
     // Originaly from SimpleDrawingPlayer
-    // EFFECTS: return true if the given Point (x,y) is contained within the bounds
-    // of this Vertex
+    // EFFECTS: return true if the given Point (x,y) is contained within the circle
+    // representing the Vertex
     public boolean contains(Point point) {
-        int point_x = point.x;
-        int point_y = point.y;
-
         // Pythagoras' theorem
-        return (point_x - this.x) * (point_x - this.x) + (point_y - this.y) * (point_y - this.y) <= RADIUS * RADIUS;
+        return (point.x - this.x) * (point.x - this.x) + (point.y - this.y) * (point.y - this.y) <= RADIUS * RADIUS;
+    }
+
+    // GUI-only.
+    // EFFECT: change the Vertex's status to Active; recoloring it to red.
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    // GUI-only.
+    // EFFECT: move the Vertex to a new location.
+    public void setPos(Point point) {
+        this.x = point.x;
+        this.y = point.y;
     }
 
     public int getLabel() {
@@ -128,9 +130,13 @@ public class Vertex implements Writable, Shape {
         return this.y;
     }
 
-    public int getRadius() {
-        return RADIUS;
+    public boolean getActive() {
+        return isActive;
     }
+
+    // public int getRadius() {
+    // return RADIUS;
+    // }
 
     public List<Edge> getAdjacent() {
         return this.adjacent;

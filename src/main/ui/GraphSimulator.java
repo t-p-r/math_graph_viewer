@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.*;
 
 import model.*;
+import model.exception.GraphException;
 
 public class GraphSimulator extends JFrame {
     public static final int WIDTH = 1280;
@@ -15,6 +16,7 @@ public class GraphSimulator extends JFrame {
 
     private GraphPanel graphPanel;
 
+    // ctor
     public GraphSimulator() {
         super("Graph Simulator");
         initializeGraphics(); // from SimpleDrawingPlayer
@@ -53,34 +55,20 @@ public class GraphSimulator extends JFrame {
     }
 
     // EFFECT: handle an event where the mouse was clicked
-    // if single-click AND the position is empty, create a new vertex at said
-    // position.
-    // if single-click AND a vertex is in that position:
-    // - if vertex was previously clicked on in the previous mouse action, create an
-    // edge going from that vertex to the current vertex.
-    // if double-click, remove any vertex occupying the mouse's position
     public void handleMouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 1) {
-            if (!graphPanel.containsVertexAtPos(e.getPoint())) {
-                graphPanel.addVertex(e.getPoint());
-            } else {
-                Vertex lastClickedOn = graphPanel.getLastClickedOn();
-                if (lastClickedOn != null && graphPanel.containsVertexAtPos(e.getPoint())) {
-                    System.out.println("here");
-                    graphPanel.addEdge(lastClickedOn, e.getPoint());
-                    graphPanel.clearClickedVertex();
-                } else {
-                    graphPanel.saveClickedVertex(e.getPoint());
-                }
-            }
-        } else if (e.getClickCount() == 2) {
-            graphPanel.removeVertex(e.getPoint());
+        try {
+            graphPanel.handleMouseClicked(e);
+            repaint();
+        } catch (GraphException ge) {
+            System.out.println("Unexpected error");
+            ge.printStackTrace();
         }
-        repaint();
     }
 
+    // EFFECT: handle an event where the mouse was dragged
     public void handleMouseDragged(MouseEvent e) {
-        System.out.println(e.getPoint());
+        graphPanel.handleMouseDragged(e);
+        repaint();
     }
 
     // Originaly from SimpleDrawingPlayer
@@ -96,12 +84,12 @@ public class GraphSimulator extends JFrame {
         // handleMouseReleased(translateEvent(e));
         // }
 
-        // EFFECTS:Forward mouse clicked event to the active tool
+        // EFFECTS: Forward mouse clicked event to the active tool
         public void mouseClicked(MouseEvent e) {
             handleMouseClicked(translateEvent(e));
         }
 
-        // EFFECTS:Forward mouse dragged event to the active tool
+        // EFFECTS: Forward mouse dragged event to the active tool
         public void mouseDragged(MouseEvent e) {
             handleMouseDragged(translateEvent(e));
         }

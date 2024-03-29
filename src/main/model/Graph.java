@@ -47,9 +47,9 @@ public class Graph implements Writable {
 
             jsonArray = json.getJSONArray("edges");
             for (Object obj : jsonArray) {
-                int beginVertex = ((JSONObject) obj).getInt("beginLabel");
-                int endVertex = ((JSONObject) obj).getInt("endLabel");
-                addEdge(beginVertex, endVertex);
+                int firstVertex = ((JSONObject) obj).getInt("beginLabel");
+                int secondVertex = ((JSONObject) obj).getInt("endLabel");
+                addEdge(firstVertex, secondVertex);
             }
 
         } catch (RuntimeException | GraphException ge) {
@@ -107,6 +107,16 @@ public class Graph implements Writable {
         return null;
     }
 
+    public int numOfVertexAtPos(Point pos) {
+        int res = 0;
+        for (Vertex v : getVertices()) {
+            if (v.contains(pos)) {
+                res++;
+            }
+        }
+        return res;
+    }
+
     // EFFECTS: returns a list of edges currently in the graph.
     public List<Edge> getEdges() {
         List<Edge> edges = new ArrayList<>();
@@ -116,6 +126,17 @@ public class Graph implements Writable {
             }
         }
         return edges;
+    }
+
+    // EFFECT: return true if there is an edge connecting firstVertex and
+    // secondVertex
+    public boolean hasEdge(Vertex firstVertex, Vertex secondVertex) {
+        for (Edge e : firstVertex.getAdjacent()) {
+            if (e.getfirstVertex() == firstVertex && e.getsecondVertex() == secondVertex) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // MODIFIES: this
@@ -167,45 +188,52 @@ public class Graph implements Writable {
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two vertices in the graph.
     // If either labels is negative, throw NegativeLabelException.
-    public void addEdge(Vertex beginVertex, Vertex endVertex) throws GraphException {
-        if (beginVertex.getLabel() < 0 || endVertex.getLabel() < 0) {
+    public void addEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
+        if (firstVertex.getLabel() < 0 || secondVertex.getLabel() < 0) {
             throw new NegativeLabelException();
         }
 
-        Vertex begin = withLabel(beginVertex.getLabel());
-        Vertex end = withLabel(endVertex.getLabel());
+        Vertex begin = withLabel(firstVertex.getLabel());
+        Vertex end = withLabel(secondVertex.getLabel());
         begin.addEdge(end);
+        end.addEdge(begin);
     }
 
     // MODIFIES: this
     // EFFECT: attempts to add an edge connecting two labels in the graph.
     // If either labels hasn't already existed, throw MissingLabelException.
-    public void addEdge(int beginLabel, int endLabel) throws GraphException {
-        if (!containsLabel(beginLabel) || !containsLabel(endLabel)) {
+    public void addEdge(int firstLabel, int secondLabel) throws GraphException {
+        if (!containsLabel(firstLabel) || !containsLabel(secondLabel)) {
             throw new MissingLabelException();
         }
-        Vertex beginVertex = withLabel(beginLabel);
-        Vertex endVertex = withLabel(endLabel);
-        addEdge(beginVertex, endVertex);
+        Vertex firstVertex = withLabel(firstLabel);
+        Vertex secondVertex = withLabel(secondLabel);
+        addEdge(firstVertex, secondVertex);
+    }
+
+    // MODIFIES: this
+    // EFFECT: attempts to remove the first edge found connecting two vertices in
+    // the graph.
+    // If the either vertices hasn't already existed, throw
+    // MissingLabelException.
+    public boolean removeEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
+        if (!containsLabel(firstVertex.getLabel()) || !containsLabel(secondVertex.getLabel())) {
+            throw new MissingLabelException();
+        }
+        return firstVertex.removeEdge(secondVertex) && secondVertex.removeEdge(firstVertex);
     }
 
     // MODIFIES: this
     // EFFECT: attempts to remove the first edge found connecting two label to the
     // graph.
     // If either labels is negative, throw NegativeLabelException.
-    // If the label of the begin vertex hasn't already existed, throw
-    // MissingLabelException.
-    public boolean removeEdge(int beginLabel, int endLabel) throws GraphException {
-        if (beginLabel < 0 || endLabel < 0) {
+    public boolean removeEdge(int firstLabel, int secondLabel) throws GraphException {
+        if (firstLabel < 0 || secondLabel < 0) {
             throw new NegativeLabelException();
         }
-        if (!containsLabel(beginLabel)) {
-            throw new MissingLabelException();
-        }
-
-        Vertex begin = withLabel(beginLabel);
-        Vertex end = withLabel(endLabel);
-        return begin.removeEdge(end);
+        Vertex firstVertex = withLabel(firstLabel);
+        Vertex secondVertex = withLabel(secondLabel);
+        return removeEdge(firstVertex, secondVertex);
     }
 
     // EFFECT: return a JSONArray consisting of JSONObject-s converted from items of

@@ -204,8 +204,8 @@ class GraphTest {
         safeAddVertex(20);
         safeAddEdge(10, 20);
 
-        assertEquals(g.withLabel(10).getAdjacent().get(0).getBeginVertex().getLabel(), 10);
-        assertEquals(g.withLabel(10).getAdjacent().get(0).getEndVertex().getLabel(), 20);
+        assertEquals(g.withLabel(10).getAdjacent().get(0).getfirstVertex().getLabel(), 10);
+        assertEquals(g.withLabel(10).getAdjacent().get(0).getsecondVertex().getLabel(), 20);
     }
 
     @Test

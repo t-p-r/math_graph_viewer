@@ -181,9 +181,9 @@ public class GraphSimulatorTerminal {
         List<Edge> edges = currentGraph.getEdges();
         for (Edge e : edges) {
             System.out.print("From vertex with label ");
-            System.out.print(Integer.toString(e.getBeginVertex().getLabel()) + " ");
+            System.out.print(Integer.toString(e.getfirstVertex().getLabel()) + " ");
             System.out.print("to vertex with label ");
-            System.out.println(Integer.toString(e.getEndVertex().getLabel()) + ".");
+            System.out.println(Integer.toString(e.getsecondVertex().getLabel()) + ".");
         }
     }
 
