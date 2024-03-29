@@ -9,17 +9,17 @@ import java.util.ArrayList;
 // Vertices in graph implementation. Uses an adjacent list which connects to edges and not other vertices directly.
 // Instantiated vertices MUST have a POSITIVE label. Uninstantiated vertices have a label of -1.
 public class Vertex implements Writable, Shape {
-    private int label = -1;
-    private List<Edge> adjacent;
 
-    // these are GUI-only
     private static final int RADIUS = 40; // radius of vertex Circle.
     private static final Color IDLE_COLOR = Color.orange;
     private static final Color ACTIVE_COLOR = Color.red;
     private boolean isActive; // whether the Vertex is being HOVERED ON by a mouse
 
+    private int label = -1;
     private int x;
     private int y;
+
+    private List<Edge> adjacent;
 
     // REQUIRES: label >= 0
     // EFFECTS: creates a new vertex with said label and no adjacent vertices
