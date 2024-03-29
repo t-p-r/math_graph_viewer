@@ -55,7 +55,6 @@ public class GraphPanel extends JPanel {
                 clearActive();
             } else { // select vertex, deselect vertex, toggle edge
                 if (lastActive != null && numOfVertexAtPos(e.getPoint()) > 0) {
-                    // System.out.println("here");
                     Vertex otherVertex = currentGraph.vertexAtPos(e.getPoint());
                     if (currentGraph.hasEdge(lastActive, otherVertex)) {
                         currentGraph.removeEdge(lastActive, otherVertex);
@@ -157,7 +156,6 @@ public class GraphPanel extends JPanel {
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
             if (chooser.showSaveDialog(GraphPanel.this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    System.out.println(chooser.getSelectedFile().getCanonicalPath());
                     GraphWriter graphWriter = new GraphWriter(chooser.getSelectedFile().getCanonicalPath());
                     graphWriter.open();
                     graphWriter.write(currentGraph);
