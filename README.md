@@ -24,6 +24,6 @@ This application is geared towards those having the first touches with graphs an
 - To select a vertex, left-click on it.
 - To add an edge to the current graph, select one vertex then left-click on the other vertex.
 - To move a vertex, first select it, then drag it around.
-- To save the graph click `ctrl+S`.
-- To load the graph, first click `ctrl+L` then choose the desired file in the pop-up file explorer.
+- To save the graph, first click on the "Save" button then type the name of the savefile (should end in .json).
+- To load the graph, first click on the "Load" button then choose the desired file in the pop-up file explorer.
 - Visual component: the graph itself (duh).

@@ -16,7 +16,8 @@ public class GraphPanel extends JPanel {
     private static final String DATA_DIR = "./data/";
     private Graph currentGraph;
     private Vertex lastActive; // to add edges
-    private JButton load, save;
+    private JButton load;
+    private JButton save;
 
     public GraphPanel() {
         super();

@@ -1,4 +1,5 @@
 // Originally from JsonSerializationDemo
+
 package persistence;
 
 import org.json.JSONObject;
