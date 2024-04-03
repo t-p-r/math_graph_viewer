@@ -105,6 +105,7 @@ public class Graph implements Writable {
     // EFFECTS: Add a Vertex to the graph.
     public void addVertex(Vertex v) throws GraphException {
         vertices.add(v);
+        EventLog.getInstance().logEvent(new Event("added vertex" + v.getLabel()));
     }
 
     // EFFECTS: attempts to add an empty Vertex with a label to the graph.
@@ -130,6 +131,8 @@ public class Graph implements Writable {
         }
         // labelToVertex.remove(v.getLabel());
         vertices.remove(v);
+        EventLog.getInstance().logEvent(new Event("removed vertex "
+                + v.getLabel()));
     }
 
     // MODIFIES: this
@@ -151,11 +154,12 @@ public class Graph implements Writable {
     // MODIFIES: this
     // EFFECTS: attempts to add an edge connecting two vertices in the graph.
     public void addEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
-
         Vertex begin = vertexWithLabel(firstVertex.getLabel());
         Vertex end = vertexWithLabel(secondVertex.getLabel());
         begin.addEdge(end);
         end.addEdge(begin);
+        EventLog.getInstance().logEvent(new Event("added an edge connecting vertices "
+                + firstVertex.getLabel() + " and " + secondVertex.getLabel()));
     }
 
     // MODIFIES: this
@@ -180,8 +184,13 @@ public class Graph implements Writable {
     // If the either vertices hasn't already existed, throw
     // MissingLabelException.
     public boolean removeEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
-        return firstVertex.removeEdge(secondVertex)
-                && secondVertex.removeEdge(firstVertex);
+        if (firstVertex.removeEdge(secondVertex)
+                && secondVertex.removeEdge(firstVertex)) {
+            EventLog.getInstance().logEvent(new Event("removed the edge connecting vertices "
+                    + firstVertex.getLabel() + " and " + secondVertex.getLabel()));
+            return true;
+        }
+        return false;
     }
 
     // MODIFIES: this

@@ -1,58 +1,70 @@
 {
-    "numOfEdges": 10,
+    "numOfEdges": 16,
     "numOfVertices": 6,
     "vertices": [
         {
-            "x": 79,
-            "y": 231,
+            "x": 478,
+            "y": 310,
             "label": 1
         },
         {
-            "x": 519,
-            "y": 503,
-            "label": 2
-        },
-        {
-            "x": 886,
-            "y": 247,
-            "label": 3
-        },
-        {
-            "x": 839,
-            "y": 704,
+            "x": 582,
+            "y": 593,
             "label": 4
         },
         {
-            "x": 601,
-            "y": 339,
+            "x": 956,
+            "y": 259,
             "label": 5
         },
         {
-            "x": 398,
-            "y": 415,
+            "x": 992,
+            "y": 498,
             "label": 6
+        },
+        {
+            "x": 283,
+            "y": 120,
+            "label": 2
+        },
+        {
+            "x": 581,
+            "y": 152,
+            "label": 7
         }
     ],
     "edges": [
         {
             "firstLabel": 1,
-            "secondLabel": 5
-        },
-        {
-            "firstLabel": 2,
-            "secondLabel": 5
-        },
-        {
-            "firstLabel": 2,
             "secondLabel": 4
         },
         {
-            "firstLabel": 3,
-            "secondLabel": 4
+            "firstLabel": 1,
+            "secondLabel": 2
+        },
+        {
+            "firstLabel": 1,
+            "secondLabel": 5
+        },
+        {
+            "firstLabel": 4,
+            "secondLabel": 6
+        },
+        {
+            "firstLabel": 4,
+            "secondLabel": 5
         },
         {
             "firstLabel": 5,
             "secondLabel": 6
+        },
+        {
+            "firstLabel": 5,
+            "secondLabel": 7
+        },
+        {
+            "firstLabel": 2,
+            "secondLabel": 7
         }
     ]
 }

@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Edge;
+import model.Event;
+import model.EventLog;
 import model.Graph;
 import model.Vertex;
 import model.exception.GraphException;
@@ -64,10 +66,10 @@ public class GraphPanel extends JPanel {
             } else { // select vertex, deselect vertex, toggle edge
                 if (lastActive != null && numOfVertexAtPos(e.getPoint()) > 0) {
                     Vertex otherVertex = currentGraph.vertexAtPos(e.getPoint());
-                    if (currentGraph.hasEdge(lastActive, otherVertex)) {
-                        currentGraph.removeEdge(lastActive, otherVertex);
+                    if (hasEdge(lastActive, otherVertex)) {
+                        removeEdge(lastActive, otherVertex);
                     } else if (lastActive != otherVertex) {
-                        currentGraph.addEdge(lastActive, otherVertex);
+                        addEdge(lastActive, otherVertex);
                     }
                     clearActive();
                 } else {
@@ -102,6 +104,12 @@ public class GraphPanel extends JPanel {
         return currentGraph.numOfVertexAtPos(pos);
     }
 
+    // EFFECTS: return true if there is an edge connecting firstVertex and
+    // secondVertex
+    public boolean hasEdge(Vertex firstVertex, Vertex secondVertex) {
+        return currentGraph.hasEdge(firstVertex, secondVertex);
+    }
+
     // MODIFIES: this
     // EFFECTS: add a Vertex onto the canvas.
     public boolean addVertex(Point pos) {
@@ -132,6 +140,18 @@ public class GraphPanel extends JPanel {
     }
 
     // MODIFIES: this
+    // EFFECTS: add an edge connecting firstVertex and secondVertex
+    public void addEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
+        currentGraph.addEdge(firstVertex, secondVertex);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: remove an edge connecting firstVertex and secondVertex
+    public boolean removeEdge(Vertex firstVertex, Vertex secondVertex) throws GraphException {
+        return currentGraph.removeEdge(firstVertex, secondVertex);
+    }
+
+    // MODIFIES: this
     // EFFECTS: mark the first Vertex found occupying pos as active.
     public void saveSelected(Point pos) {
         lastActive = currentGraph.vertexAtPos(pos);
@@ -154,8 +174,8 @@ public class GraphPanel extends JPanel {
     }
 
     class LoadGraph implements ActionListener {
-        // EFFECTS: Present the user with a file explorer. The file chosen will be loaded
-        // onto the Graph.
+        // EFFECTS: Present the user with a file explorer. The file chosen will be
+        // loaded onto the Graph.
         public void actionPerformed(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(DATA_DIR);
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
@@ -174,8 +194,8 @@ public class GraphPanel extends JPanel {
 
     class SaveGraph implements ActionListener {
         // MODIFIES: the file chosen by the user
-        // EFFECTS: Present the user with a file explorer. Save the Graph at the location
-        // chosen by the user.
+        // EFFECTS: Present the user with a file explorer. Save the Graph at the
+        // location chosen by the user.
         public void actionPerformed(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(DATA_DIR);
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));

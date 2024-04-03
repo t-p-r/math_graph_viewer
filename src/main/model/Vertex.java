@@ -111,6 +111,7 @@ public class Vertex implements Writable, Shape {
     // EFFECTS: change the Vertex's status to Active; recoloring it to red.
     public void setSelected(boolean active) {
         isSelected = active;
+        EventLog.getInstance().logEvent(new Event("selected vertex " + getLabel()));
     }
 
     // MODIFIES: this

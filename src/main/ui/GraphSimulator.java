@@ -2,11 +2,10 @@ package ui;
 
 import javax.swing.*;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import java.awt.event.*;
 import java.awt.*;
 
+import model.EventLog;
 import model.exception.GraphException;
 
 public class GraphSimulator extends JFrame {
@@ -15,11 +14,12 @@ public class GraphSimulator extends JFrame {
 
     private GraphPanel graphPanel;
 
-    // EFFECTS: create a new GraphSimulator with an empty Graph and load/save buttons.
+    // EFFECTS: create a new GraphSimulator with an empty Graph and load/save
+    // buttons.
     public GraphSimulator() {
         super("Graph Simulator");
         initializeGraphics(); // from SimpleDrawingPlayer
-        initializeInteractions();
+        initializeAdapters();
     }
 
     // Originaly from SimpleDrawingPlayer
@@ -36,11 +36,14 @@ public class GraphSimulator extends JFrame {
         setVisible(true);
     }
 
-    // EFFECTS: initialize a MouseListener
-    private void initializeInteractions() {
+    // EFFECTS: initialize a MouseListener and a WindowListener
+    private void initializeAdapters() {
         MouseListener ml = new MouseListener();
         addMouseListener(ml);
         addMouseMotionListener(ml);
+
+        QuitLogger ql = new QuitLogger();
+        addWindowListener(ql);
     }
 
     // Originaly from SimpleDrawingPlayer
@@ -87,6 +90,17 @@ public class GraphSimulator extends JFrame {
         // EFFECTS: translates the mouse event to current drawing's coordinate system
         private MouseEvent translateEvent(MouseEvent e) {
             return SwingUtilities.convertMouseEvent(e.getComponent(), e, graphPanel);
+        }
+    }
+
+    private class QuitLogger extends WindowAdapter {
+        // EFFECT: print all logs to terminal the moment the app quits
+        @Override
+        public void windowClosing(WindowEvent we) {
+            System.out.println("done");
+            for (model.Event e : EventLog.getInstance()) {
+                System.out.println(e.toString());
+            }
         }
     }
 }
