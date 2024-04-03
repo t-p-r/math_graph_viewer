@@ -27,3 +27,9 @@ This application is geared towards those having the first touches with graphs an
 - To save the graph, first click on the "Save" button then type the name of the savefile (should end in .json).
 - To load the graph, first click on the "Load" button then choose the desired file in the pop-up file explorer.
 - Visual component: the graph itself (duh).
+
+## Phase 4: Task 3
+
+Overall I'm quite satisfied with the design; however, if I had more time, I would absorb all the functionalities of the `Edge` class into the `Vertex` class. At first, I built this class to represent the connection between `Vertex` objects; over time, however, I realized that this can be represented in the `Vertex` class file directly, and without much hassle.
+
+One thing I also tried to do is to create classes in the `ui` package that extends the `Vertex`, `Edge`, and `Graph` classes and containing only functions related to the GUI (i.e. the `draw` function), however, there were so much technical difficulties that I had to abandon this soon after.

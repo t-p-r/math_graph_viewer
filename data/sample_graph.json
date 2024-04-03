@@ -1,5 +1,5 @@
 {
-    "numOfEdges": 16,
+    "numOfEdges": 20,
     "numOfVertices": 6,
     "vertices": [
         {
@@ -55,8 +55,16 @@
             "secondLabel": 6
         },
         {
+            "firstLabel": 3,
+            "secondLabel": 4
+        },
+        {
             "firstLabel": 4,
             "secondLabel": 6
+        },
+        {
+            "firstLabel": 4,
+            "secondLabel": 5
         },
         {
             "firstLabel": 5,

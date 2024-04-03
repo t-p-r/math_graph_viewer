@@ -71,9 +71,7 @@ public class Graph implements Writable {
     public List<Edge> getEdges() {
         List<Edge> edges = new ArrayList<>();
         for (Vertex v : vertices) {
-            for (Edge e : v.getAdjacent()) {
-                edges.add(e);
-            }
+            edges.addAll(v.getAdjacent());
         }
         return edges;
     }

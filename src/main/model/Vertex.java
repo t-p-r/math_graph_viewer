@@ -7,19 +7,19 @@ import persistence.Writable;
 import java.util.ArrayList;
 
 // Vertices in graph implementation. Uses an adjacent list which connects to edges and not other vertices directly.
-// Instantiated vertices MUST have a POSITIVE label. Uninstantiated vertices have a label of -1.
+// Instantiated vertices MUST have a POSITIVE label.
 public class Vertex implements Writable, Shape {
-    private int label = -1;
+    private int label;
     private List<Edge> adjacent;
 
-    // REQUIRES: label >= 0
+    // REQUIRES: label > 0
     // EFFECTS: creates a new vertex with said label and no adjacent vertices
     public Vertex(int label) {
         this.label = label;
         this.adjacent = new ArrayList<>();
     }
 
-    // REQUIRES: label >= 0
+    // REQUIRES: label > 0
     // MODIFIES: this
     // EFFECTS: sets the label for the vertex
     public void setLabel(int label) {
@@ -36,7 +36,7 @@ public class Vertex implements Writable, Shape {
     // EFFECTS: Attempts to remove a directed edge from the current vertex to
     // <other>.
     // If there are many such edges, removes the first one found.
-    // Returns whether an edge was succesfully removed.
+    // Returns whether an edge was successfully removed.
     public boolean removeEdge(Vertex other) {
         for (Edge e : adjacent) {
             if (e.getSecondVertex() == other) {
@@ -80,7 +80,7 @@ public class Vertex implements Writable, Shape {
         this.adjacent = new ArrayList<>();
     }
 
-    // Originaly from SimpleDrawingPlayer
+    // Originally from SimpleDrawingPlayer
     // MODIFIES: g
     // EFFECTS: draws this Shape on the SimpleDrawingPlayer, if the shape is
     // selected, Shape is filled in
@@ -98,7 +98,7 @@ public class Vertex implements Writable, Shape {
         g.drawString(Integer.toString(getLabel()), xpos - 3, ypos + 4); // draw label
     }
 
-    // Originaly from SimpleDrawingPlayer
+    // Originally from SimpleDrawingPlayer
     // EFFECTS: return true if the given Point (x,y) is contained within the circle
     // representing the Vertex
     public boolean contains(Point point) {
