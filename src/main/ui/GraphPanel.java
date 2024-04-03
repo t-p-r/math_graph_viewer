@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.Edge;
-import model.Event;
-import model.EventLog;
 import model.Graph;
 import model.Vertex;
 import model.exception.GraphException;
