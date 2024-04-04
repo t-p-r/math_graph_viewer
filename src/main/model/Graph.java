@@ -103,7 +103,7 @@ public class Graph implements Writable {
     // EFFECTS: Add a Vertex to the graph.
     public void addVertex(Vertex v) throws GraphException {
         vertices.add(v);
-        EventLog.getInstance().logEvent(new Event("added vertex" + v.getLabel()));
+        EventLog.getInstance().logEvent(new Event("added vertex " + v.getLabel()));
     }
 
     // EFFECTS: attempts to add an empty Vertex with a label to the graph.

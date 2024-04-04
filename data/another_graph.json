@@ -1,70 +1,61 @@
 {
-    "numOfEdges": 16,
-    "numOfVertices": 6,
+    "numOfEdges": 14,
+    "numOfVertices": 5,
     "vertices": [
         {
-            "x": 478,
-            "y": 310,
+            "x": 500,
+            "y": 161,
             "label": 1
         },
         {
-            "x": 582,
-            "y": 593,
-            "label": 4
-        },
-        {
-            "x": 956,
-            "y": 259,
-            "label": 5
-        },
-        {
-            "x": 992,
-            "y": 498,
-            "label": 6
-        },
-        {
-            "x": 283,
-            "y": 120,
+            "x": 367,
+            "y": 478,
             "label": 2
         },
         {
-            "x": 581,
-            "y": 152,
-            "label": 7
+            "x": 826,
+            "y": 526,
+            "label": 3
+        },
+        {
+            "x": 525,
+            "y": 729,
+            "label": 4
+        },
+        {
+            "x": 742,
+            "y": 300,
+            "label": 5
         }
     ],
     "edges": [
-        {
-            "firstLabel": 1,
-            "secondLabel": 4
-        },
         {
             "firstLabel": 1,
             "secondLabel": 2
         },
         {
             "firstLabel": 1,
+            "secondLabel": 4
+        },
+        {
+            "firstLabel": 1,
             "secondLabel": 5
-        },
-        {
-            "firstLabel": 4,
-            "secondLabel": 6
-        },
-        {
-            "firstLabel": 4,
-            "secondLabel": 5
-        },
-        {
-            "firstLabel": 5,
-            "secondLabel": 6
-        },
-        {
-            "firstLabel": 5,
-            "secondLabel": 7
         },
         {
             "firstLabel": 2,
-            "secondLabel": 7
+            "secondLabel": 3
+        },
+        {
+            "firstLabel": 3,
+            "secondLabel": 4
+        },
+        {
+            "firstLabel": 3,
+            "secondLabel": 5
+        },
+        {
+            "firstLabel": 4,
+            "secondLabel": 5
         }
     ]
 }

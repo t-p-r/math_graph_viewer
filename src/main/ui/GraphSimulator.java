@@ -8,6 +8,7 @@ import java.awt.*;
 import model.EventLog;
 import model.exception.GraphException;
 
+// GUI app for personal project.
 public class GraphSimulator extends JFrame {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = 960;

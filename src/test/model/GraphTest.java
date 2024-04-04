@@ -95,7 +95,7 @@ class GraphTest {
         }
 
         assertEquals(g.getVertices().size(), 6);
-        assertEquals(g.getEdges().size(), 16);
+        assertEquals(g.getEdges().size(), 20);
     }
 
     @Test
