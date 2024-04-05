@@ -18,6 +18,11 @@ public class GraphWriter {
         this.destination = destination;
     }
 
+    // EFFECTS: constructs writer to write to destination file
+    public GraphWriter(File file) throws IOException{
+        this.destination = file.getCanonicalPath();
+    }
+
     // MODIFIES: this
     // EFFECTS: opens writer; throws FileNotFoundException if destination file
     // cannot

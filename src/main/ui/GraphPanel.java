@@ -199,7 +199,7 @@ public class GraphPanel extends JPanel {
             chooser.setFileFilter(new FileNameExtensionFilter("JSON files", "json"));
             if (chooser.showSaveDialog(GraphPanel.this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    GraphWriter graphWriter = new GraphWriter(chooser.getSelectedFile().getCanonicalPath());
+                    GraphWriter graphWriter = new GraphWriter(chooser.getSelectedFile());
                     graphWriter.open();
                     graphWriter.write(currentGraph);
                     graphWriter.close();

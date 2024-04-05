@@ -28,6 +28,36 @@ This application is geared towards those having the first touches with graphs an
 - To load the graph, first click on the "Load" button then choose the desired file in the pop-up file explorer.
 - Visual component: the graph itself (duh).
 
+## Phase 4: Task 2
+
+An example: 
+```
+Fri Apr 05 15:06:48 PDT 2024
+added vertex 1
+Fri Apr 05 15:06:50 PDT 2024
+added vertex 2
+Fri Apr 05 15:06:52 PDT 2024
+added vertex 3
+Fri Apr 05 15:06:53 PDT 2024
+selected vertex 1
+Fri Apr 05 15:06:54 PDT 2024
+added an edge connecting vertices 1 and 2
+Fri Apr 05 15:06:54 PDT 2024
+selected vertex 1
+Fri Apr 05 15:06:55 PDT 2024
+selected vertex 2
+Fri Apr 05 15:06:55 PDT 2024
+added an edge connecting vertices 2 and 3
+Fri Apr 05 15:06:55 PDT 2024
+selected vertex 2
+Fri Apr 05 15:06:57 PDT 2024
+selected vertex 2
+Fri Apr 05 15:06:58 PDT 2024
+selected vertex 2
+Fri Apr 05 15:06:58 PDT 2024
+removed vertex 2
+```
+
 ## Phase 4: Task 3
 
 Overall I'm quite satisfied with the design; however, if I had more time, I would absorb all the functionalities of the `Edge` class into the `Vertex` class. At first, I built this class to represent the connection between `Vertex` objects; over time, however, I realized that this can be represented in the `Vertex` class file directly, and without much hassle.

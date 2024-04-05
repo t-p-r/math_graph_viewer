@@ -98,7 +98,6 @@ public class GraphSimulator extends JFrame {
         // EFFECT: print all logs to terminal the moment the app quits
         @Override
         public void windowClosing(WindowEvent we) {
-            System.out.println("done");
             for (model.Event e : EventLog.getInstance()) {
                 System.out.println(e.toString());
             }
