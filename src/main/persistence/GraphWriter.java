@@ -19,7 +19,7 @@ public class GraphWriter {
     }
 
     // EFFECTS: constructs writer to write to destination file
-    public GraphWriter(File file) throws IOException{
+    public GraphWriter(File file) throws IOException {
         this.destination = file.getCanonicalPath();
     }
 
