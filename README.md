@@ -1,11 +1,11 @@
-# Personal Project 
+# Mathematical Graph Viewer
 
 
-## Description
+## What is this?
 
 This application will allow users to first construct an undirect [graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)) by adding/removing vertices and edges, either by interacting with a GUI or through a command-line interface.
 
-This application is geared towards those having the first touches with graphs and related concepts; for example, CS 221 students. The idea first came to my mind because of my experience and affinity for competitive programming and DSA (data structures and algorithms) in general.
+This application is geared towards those having the first touches with graphs and related concepts. The idea first came to my mind because of my experience and affinity for competitive programming and DSA (data structures and algorithms) in general.
 
 ## User stories
 
@@ -17,7 +17,7 @@ This application is geared towards those having the first touches with graphs an
 - As a user, I would like to view a list of vertices or edges currently existing in the graph.
 
 
-## Instruction for Grader
+## User guide
 
 - To add a vertex to the current graph, left-click on an empty point on the screen not occupied by any existing vertex.
 - To remove a vertex from the current graph, double-click on said vertex.
@@ -28,9 +28,8 @@ This application is geared towards those having the first touches with graphs an
 - To load the graph, first click on the "Load" button then choose the desired file in the pop-up file explorer.
 - Visual component: the graph itself (duh).
 
-## Phase 4: Task 2
+## Log example (for debugging)
 
-An example: 
 ```
 Fri Apr 05 15:06:48 PDT 2024
 added vertex 1
@@ -58,7 +57,7 @@ Fri Apr 05 15:06:58 PDT 2024
 removed vertex 2
 ```
 
-## Phase 4: Task 3
+## Commentaries
 
 Overall I'm quite satisfied with the design; however, if I had more time, I would absorb all the functionalities of the `Edge` class into the `Vertex` class. At first, I built this class to represent the connection between `Vertex` objects; over time, however, I realized that this can be represented in the `Vertex` class file directly, and without much hassle.
 
