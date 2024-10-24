@@ -57,8 +57,8 @@ Fri Apr 05 15:06:58 PDT 2024
 removed vertex 2
 ```
 
-## Commentaries
+<!-- ## Commentaries
 
 Overall I'm quite satisfied with the design; however, if I had more time, I would absorb all the functionalities of the `Edge` class into the `Vertex` class. At first, I built this class to represent the connection between `Vertex` objects; over time, however, I realized that this can be represented in the `Vertex` class file directly, and without much hassle.
 
-One thing I also tried to do is to create classes in the `ui` package that extends the `Vertex`, `Edge`, and `Graph` classes and containing only functions related to the GUI (i.e. the `draw` function), however, there were so much technical difficulties that I had to abandon this soon after.
+One thing I also tried to do is to create classes in the `ui` package that extends the `Vertex`, `Edge`, and `Graph` classes and containing only functions related to the GUI (i.e. the `draw` function), however, there were so much technical difficulties that I had to abandon this soon after. -->
