@@ -1,6 +1,6 @@
 {
-    "numOfEdges": 6,
-    "numOfVertices": 3,
+    "numOfEdges": 2,
+    "numOfVertices": 2,
     "vertices": [
         {
             "x": 494,
@@ -11,25 +11,10 @@
             "x": 736,
             "y": 362,
             "label": 2
-        },
-        {
-            "x": 607,
-            "y": 192,
-            "label": 3
         }
     ],
-    "edges": [
-        {
-            "firstLabel": 1,
-            "secondLabel": 2
-        },
-        {
-            "firstLabel": 1,
-            "secondLabel": 3
-        },
-        {
-            "firstLabel": 2,
-            "secondLabel": 3
-        }
-    ]
+    "edges": [{
+        "firstLabel": 1,
+        "secondLabel": 2
+    }]
 }
