@@ -1,4 +1,4 @@
-# Mathematical Network Visualizer
+# Mathematical Graph Viewer
 
 ## What is this?
 
